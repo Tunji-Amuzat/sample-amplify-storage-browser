@@ -23,7 +23,7 @@ const customBucket = Bucket.fromBucketAttributes(customBucketStack, "alarrt-test
 
 backend.addOutput({
   storage: {
-    aws_region: customBucket.env.region,
+    // aws_region: customBucket.env.region,
     bucket_name: customBucket.bucketName,
     buckets: [
       {
