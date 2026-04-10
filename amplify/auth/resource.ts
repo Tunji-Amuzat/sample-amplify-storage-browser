@@ -8,8 +8,5 @@ export const auth = defineAuth({
   loginWith: {
     email: true,
   },
-  userPool: {
-    selfSignUpEnabled: false,
-  },
   groups: ['admin']
 });
