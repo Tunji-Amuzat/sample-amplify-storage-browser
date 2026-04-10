@@ -14,7 +14,7 @@ const backend = defineBackend({
 // Reference an existing external S3 bucket
 backend.addOutput({
   storage: {
-    aws_region: 'us-east-1',
+    // aws_region: 'us-east-1',
     bucket_name: 'alarrt-test-bucket'
   }
 });
