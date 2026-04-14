@@ -1,3 +1,9 @@
+:root {
+  --gtbank-orange: #e8450a;
+  --gtbank-orange-dark: #c73a08;
+  --gtbank-orange-light: #f5ede9;
+}
+
 #root {
   margin: 0 auto;
   padding: 2rem;
@@ -8,4 +14,55 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: var(--gtbank-orange);
+  padding: 1rem 2rem;
+  margin: -2rem -2rem 2rem -2rem;
+  color: white;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.header-brand {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+}
+
+.header-greeting {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Amplify Authenticator overrides */
+[data-amplify-authenticator] {
+  --amplify-components-button-primary-background-color: var(--gtbank-orange);
+  --amplify-components-button-primary-hover-background-color: var(--gtbank-orange-dark);
+  --amplify-components-button-primary-active-background-color: var(--gtbank-orange-dark);
+  --amplify-components-tabs-item-active-color: var(--gtbank-orange);
+  --amplify-components-tabs-item-active-border-color: var(--gtbank-orange);
+  --amplify-components-fieldcontrol-focus-border-color: var(--gtbank-orange);
+  --amplify-components-button-link-color: var(--gtbank-orange);
+}
+
+/* Amplify UI Button overrides */
+.amplify-button--primary {
+  background-color: var(--gtbank-orange) !important;
+}
+
+.amplify-button--primary:hover {
+  background-color: var(--gtbank-orange-dark) !important;
+}
+
+.amplify-button[data-variation='link'] {
+  color: var(--gtbank-orange) !important;
 }
