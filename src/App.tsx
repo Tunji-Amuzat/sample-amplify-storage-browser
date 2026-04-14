@@ -20,7 +20,7 @@ function App() {
       {({ signOut }) => (
         <>
           <div className="header">
-            <Button onClick={signOut}>Sign out</Button>
+            <Button onClick={signOut} variation="link">Sign out</Button>
           </div>
           <StorageBrowser />
         </>
