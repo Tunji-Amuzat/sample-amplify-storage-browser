@@ -25,16 +25,6 @@ backend.addOutput({
         name: 'amplify-custom-config-storage',
         bucket_name: existingBucket.bucketName,
         aws_region: 'eu-west-2',
-        paths: {
-          'oyetunji/*': {
-            guest: ['get', 'list', 'write'],
-            authenticated: ['get', 'list', 'write', 'delete'],
-          },
-          'kelvin/*': {
-            'groups/admin': ['get', 'list', 'write', 'delete'],
-            authenticated: ['get', 'list'],
-          },
-        },
       },
     ],
   },
