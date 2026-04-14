@@ -62,6 +62,56 @@ This template equips you with a foundational React application integrated with A
 
 For detailed instructions on deploying your application, refer to the [deployment section](https://docs.amplify.aws/react/start/quickstart/#deploy-a-fullstack-app-to-aws) of our documentation.
 
+## EC2 Deployment
+
+**Server:** `18.235.84.239` (Elastic IP)  
+**User:** `ubuntu`  
+**PEM:** `~/DevProjects/Aknight/Cloudplexo/checkit/check-it-2026.pem`  
+**Live URL:** https://gt-pension.cloudplexo.net  
+**Nginx config:** `/etc/nginx/sites-available/gt-pension`  
+**SSL:** Let's Encrypt via Certbot (auto-renews)
+
+### Deploy steps
+
+```bash
+# 1. Sync source to server (run from project root)
+rsync -avz \
+  --exclude 'node_modules' \
+  --exclude '.git' \
+  --exclude 'dist' \
+  --exclude 'dist.zip' \
+  -e "ssh -i ~/DevProjects/Aknight/Cloudplexo/checkit/check-it-2026.pem" \
+  ./ ubuntu@18.235.84.239:/home/ubuntu/gt-pension-src/
+
+# 2. Build on server and copy to served directory
+ssh -i ~/DevProjects/Aknight/Cloudplexo/checkit/check-it-2026.pem ubuntu@18.235.84.239 '
+  source ~/.nvm/nvm.sh &&
+  cd /home/ubuntu/gt-pension-src &&
+  npm install &&
+  node_modules/.bin/vite build &&
+  cp -r dist/* /home/ubuntu/gt-pension/dist/ &&
+  chmod -R 755 /home/ubuntu/gt-pension
+'
+
+# 3. Verify
+curl -s https://gt-pension.cloudplexo.net | head -5
+```
+
+### SSH into server
+
+```bash
+ssh -i ~/DevProjects/Aknight/Cloudplexo/checkit/check-it-2026.pem ubuntu@18.235.84.239
+```
+
+### Other apps on this server
+
+| App | Domain | Port |
+|-----|--------|------|
+| gt-pension | gt-pension.cloudplexo.net | nginx static |
+| audittar-frontend | audittar.cloudplexo.net | 3001 (PM2) |
+| checkit-frontend | checkit.cloudplexo.net | 4173 (PM2) |
+| checkit-backend | checkit-api.cloudplexo.net | 3000 (PM2) |
+
 ## Contributing
 
 See [CONTRIBUTING](CONTRIBUTING.md) for more information.
