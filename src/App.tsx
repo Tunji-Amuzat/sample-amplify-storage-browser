@@ -1,6 +1,7 @@
 import {
   createAmplifyAuthAdapter,
   createStorageBrowser,
+  zipDownloadHandler,
 } from '@aws-amplify/ui-react-storage/browser';
 import '@aws-amplify/ui-react-storage/styles.css';
 import './App.css';
@@ -12,6 +13,18 @@ Amplify.configure(config);
 
 const { StorageBrowser } = createStorageBrowser({
   config: createAmplifyAuthAdapter(),
+  actions: {
+    custom: {
+      bulkDownload: {
+        handler: zipDownloadHandler,
+        actionListItem: {
+          icon: 'download',
+          label: 'Download',
+          disable: (selectedValues) => !selectedValues || selectedValues.length === 0,
+        },
+      },
+    },
+  },
 });
 
 function App() {
