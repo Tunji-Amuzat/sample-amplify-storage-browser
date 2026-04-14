@@ -27,12 +27,12 @@ backend.addOutput({
         aws_region: 'eu-west-2',
         paths: {
           'oyetunji/*': {
-            guest: ['get', 'list', 'write'],
+            guest: ['get', 'list'],
             authenticated: ['get', 'list', 'write', 'delete'],
           },
           'kelvin/*': {
             'groups/admin': ['get', 'list', 'write', 'delete'],
-            authenticated: ['get', 'list'],
+            authenticated: ['get', 'list','write'],
           },
         },
       } as any,
