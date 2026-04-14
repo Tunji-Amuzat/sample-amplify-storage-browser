@@ -1,67 +1,64 @@
 import { defineBackend } from '@aws-amplify/backend';
-import { Effect, Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { Bucket } from "aws-cdk-lib/aws-s3";
+import { Effect, Policy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { auth } from './auth/resource';
-import { storage } from './storage/resource';
 
-
-/**
- * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
- */
 const backend = defineBackend({
   auth,
-  storage
 });
 
-const customBucketStack = backend.createStack("custom-bucket-stack");
+const existingBucketStack = backend.createStack('existing-bucket-stack');
 
-// Import existing bucket
-const customBucket = Bucket.fromBucketAttributes(customBucketStack, "alarrt-test-bucket", {
-  bucketArn: "arn:aws:s3:::alarrt-test-bucket",
-  region: "us-east-1"
+// Reference the existing S3 bucket
+const existingBucket = Bucket.fromBucketAttributes(existingBucketStack, 'amplify-custom-config-storage', {
+  bucketArn: 'arn:aws:s3:::amplify-custom-config-storage',
+  region: 'eu-west-2',
 });
 
+// Wire the existing bucket into amplify_outputs.json
+backend.addOutput({
+  storage: {
+    aws_region: 'eu-west-2',
+    bucket_name: existingBucket.bucketName,
+    buckets: [
+      {
+        name: 'amplify-custom-config-storage',
+        bucket_name: existingBucket.bucketName,
+        aws_region: 'eu-west-2',
+        paths: {
+          'oyetunji/*': {
+            guest: ['get', 'list', 'write'],
+            authenticated: ['get', 'list', 'write', 'delete'],
+          },
+          'kelvin/*': {
+            'groups/admin': ['get', 'list', 'write', 'delete'],
+            authenticated: ['get', 'list'],
+          },
+        },
+      },
+    ],
+  },
+});
 
-
-/*
-  Define an inline policy to attach to Amplify's auth role
-  This policy defines how authenticated users can access your existing bucket
-*/ 
-const authPolicy = new Policy(backend.stack, "customBucketAuthPolicy", {
+// IAM policy granting authenticated users access to the existing bucket
+const authPolicy = new Policy(backend.stack, 'customBucketAuthPolicy', {
   statements: [
     new PolicyStatement({
       effect: Effect.ALLOW,
-      actions: [
-        "s3:GetObject",
-        "s3:PutObject", 
-        "s3:DeleteObject"
-      ],
-      resources: [`${customBucket.bucketArn}/*`,],
+      actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
+      resources: [`${existingBucket.bucketArn}/*`],
     }),
     new PolicyStatement({
       effect: Effect.ALLOW,
-      actions: ["s3:ListBucket"],
-      resources: [
-        `${customBucket.bucketArn}`,
-        `${customBucket.bucketArn}/*`
-        ],
+      actions: ['s3:ListBucket'],
+      resources: [existingBucket.bucketArn, `${existingBucket.bucketArn}/*`],
       conditions: {
         StringLike: {
-          "s3:prefix": ["oyetunji/*", "oyetunji/", "kelvin/*", "kelvin/"],
+          's3:prefix': ['oyetunji/*', 'oyetunji/', 'kelvin/*', 'kelvin/'],
         },
       },
     }),
   ],
 });
 
-
-// Add the policies to the authenticated user role
 backend.auth.resources.authenticatedUserIamRole.attachInlinePolicy(authPolicy);
-
-// Reference an existing external S3 bucket
-// backend.addOutput({
-//   storage: {
-//     // aws_region: 'us-east-1',
-//     bucket_name: 'alarrt-test-bucket'
-//   }
-// });
