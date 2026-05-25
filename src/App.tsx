@@ -78,13 +78,20 @@ function LocationDetailViewWithExtras() {
       <StorageBrowser.LocationDetailView.SearchSubfoldersToggle />
       <StorageBrowser.LocationDetailView.Message />
       <StorageBrowser.LocationDetailView.LoadingIndicator />
-      <StorageBrowser.LocationDetailView.LocationItemsTable />
-      <StorageBrowser.LocationDetailView.Pagination />
+      <div className="detail-body">
+        <div className="detail-table-area">
+          <StorageBrowser.LocationDetailView.LocationItemsTable />
+          <StorageBrowser.LocationDetailView.Pagination />
+        </div>
+        <StorageBrowser.LocationDetailView.FilePreview />
+      </div>
     </StorageBrowser.LocationDetailView.Provider>
   );
 }
 
 function App() {
+  const [hasLocation, setHasLocation] = useState(false);
+
   return (
     <Authenticator hideSignUp={true}>
       {({ signOut }) => (
@@ -94,10 +101,17 @@ function App() {
               Sign out
             </Button>
           </div>
-          <StorageBrowser.Provider>
-            <StorageBrowser.LocationsView />
-            <LocationDetailViewWithExtras />
-            <StorageBrowser.LocationActionView />
+          <StorageBrowser.Provider
+            onValueChange={(event) => setHasLocation(!!event.location)}
+          >
+            {hasLocation ? (
+              <>
+                <LocationDetailViewWithExtras />
+                <StorageBrowser.LocationActionView />
+              </>
+            ) : (
+              <StorageBrowser.LocationsView />
+            )}
           </StorageBrowser.Provider>
         </>
       )}

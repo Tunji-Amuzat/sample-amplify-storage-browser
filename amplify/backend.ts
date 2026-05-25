@@ -27,12 +27,10 @@ backend.addOutput({
         aws_region: 'eu-west-2',
         paths: {
           'oyetunji/*': {
-            guest: ['get', 'list'],
-            authenticated: ['get', 'list', 'write', 'delete'],
+            authenticated: ['get', 'list'],
           },
           'kelvin/*': {
-            'groups/admin': ['get', 'list', 'write', 'delete'],
-            authenticated: ['get', 'list','write'],
+            authenticated: ['get', 'list'],
           },
         },
       } as any,
@@ -45,7 +43,7 @@ const authPolicy = new Policy(backend.stack, 'customBucketAuthPolicy', {
   statements: [
     new PolicyStatement({
       effect: Effect.ALLOW,
-      actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
+      actions: ['s3:GetObject'],
       resources: [`${existingBucket.bucketArn}/*`],
     }),
     new PolicyStatement({

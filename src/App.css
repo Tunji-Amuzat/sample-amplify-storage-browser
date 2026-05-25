@@ -137,3 +137,15 @@
   font-weight: 600;
   white-space: nowrap;
 }
+
+/* File preview side-by-side layout */
+.detail-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.detail-table-area {
+  flex: 1;
+  min-width: 0;
+}
