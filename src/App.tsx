@@ -16,12 +16,24 @@ function PdfPreview({ url }: { url: string }) {
   return <iframe src={url} title="PDF preview" className="pdf-preview-frame" />;
 }
 
+// `contentDisposition` is supported by the underlying Amplify Storage `getUrl` call
+// but isn't declared on the library's public `FilePreviewUrlOptions` type.
+interface PdfUrlOptions {
+  contentDisposition?: 'inline' | 'attachment';
+  expiresIn?: number;
+  validateObjectExistence?: boolean;
+}
+
 const { StorageBrowser, useView } = createStorageBrowser({
   config: createAmplifyAuthAdapter(),
   filePreview: {
     fileTypeResolver: (fileData) =>
       fileData.key?.toLowerCase().endsWith('.pdf') ? 'pdf' : undefined,
     rendererResolver: (fileType) => (fileType === 'pdf' ? PdfPreview : undefined),
+    // The library defaults preview URLs to `contentDisposition: 'attachment'`, which
+    // makes browsers download PDFs loaded in an <iframe> instead of rendering them inline.
+    urlOptions: (fileType) =>
+      fileType === 'pdf' ? ({ contentDisposition: 'inline' } as PdfUrlOptions) : undefined,
   },
 });
 
