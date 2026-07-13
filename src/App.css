@@ -155,3 +155,113 @@
   height: 70vh;
   border: none;
 }
+
+/* Admin panel */
+.admin-panel {
+  text-align: left;
+}
+
+.admin-panel-note {
+  background-color: var(--gtbank-orange-light);
+  border: 1px solid var(--gtbank-orange);
+  border-radius: 4px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.admin-panel-error {
+  color: #b00020;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.admin-panel-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.admin-panel-users,
+.admin-panel-folders {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-create-user-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.admin-create-user-form input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.admin-user-list,
+.admin-folder-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-user-list li button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.admin-user-list li button:hover {
+  background: #f5f5f5;
+}
+
+.admin-user-list li button.selected {
+  border-color: var(--gtbank-orange);
+  background-color: var(--gtbank-orange-light);
+}
+
+.admin-folder-list li {
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+}
+
+.admin-folder-list label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Profile panel */
+.profile-panel {
+  text-align: left;
+  max-width: 480px;
+}
+
+.profile-details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.4rem 1rem;
+  margin: 1rem 0;
+}
+
+.profile-details dt {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.profile-details dd {
+  margin: 0;
+  font-size: 0.85rem;
+  word-break: break-all;
+}

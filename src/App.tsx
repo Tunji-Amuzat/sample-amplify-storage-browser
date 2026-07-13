@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   createAmplifyAuthAdapter,
   createStorageBrowser,
@@ -8,7 +8,10 @@ import './App.css';
 
 import config from '../amplify_outputs.json';
 import { Amplify } from 'aws-amplify';
+import { fetchAuthSession } from 'aws-amplify/auth';
 import { Authenticator, Button } from '@aws-amplify/ui-react';
+import { AdminPanel } from './AdminPanel';
+import { ProfilePanel } from './ProfilePanel';
 
 Amplify.configure(config);
 
@@ -110,30 +113,62 @@ function LocationDetailViewWithExtras() {
   );
 }
 
+type View = 'browser' | 'admin' | 'profile';
+
 function App() {
   const [hasLocation, setHasLocation] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [view, setView] = useState<View>('browser');
+
+  useEffect(() => {
+    fetchAuthSession()
+      .then((session) => {
+        const groups = session.tokens?.idToken?.payload['cognito:groups'];
+        setIsAdmin(Array.isArray(groups) && groups.includes('admin'));
+      })
+      .catch(() => setIsAdmin(false));
+  }, []);
 
   return (
     <Authenticator hideSignUp={true}>
       {({ signOut }) => (
         <>
           <div className="header">
+            {view !== 'browser' && (
+              <Button onClick={() => setView('browser')} variation="link">
+                Back to files
+              </Button>
+            )}
+            {view !== 'profile' && (
+              <Button onClick={() => setView('profile')} variation="link">
+                My profile
+              </Button>
+            )}
+            {isAdmin && view !== 'admin' && (
+              <Button onClick={() => setView('admin')} variation="link">
+                Manage users
+              </Button>
+            )}
             <Button onClick={signOut} variation="link">
               Sign out
             </Button>
           </div>
-          <StorageBrowser.Provider
-            onValueChange={(event) => setHasLocation(!!event.location)}
-          >
-            {hasLocation ? (
-              <>
-                <LocationDetailViewWithExtras />
-                <StorageBrowser.LocationActionView />
-              </>
-            ) : (
-              <StorageBrowser.LocationsView />
-            )}
-          </StorageBrowser.Provider>
+          {view === 'admin' && <AdminPanel />}
+          {view === 'profile' && <ProfilePanel />}
+          {view === 'browser' && (
+            <StorageBrowser.Provider
+              onValueChange={(event) => setHasLocation(!!event.location)}
+            >
+              {hasLocation ? (
+                <>
+                  <LocationDetailViewWithExtras />
+                  <StorageBrowser.LocationActionView />
+                </>
+              ) : (
+                <StorageBrowser.LocationsView />
+              )}
+            </StorageBrowser.Provider>
+          )}
         </>
       )}
     </Authenticator>
