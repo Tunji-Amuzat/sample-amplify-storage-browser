@@ -12,8 +12,17 @@ import { Authenticator, Button } from '@aws-amplify/ui-react';
 
 Amplify.configure(config);
 
+function PdfPreview({ url }: { url: string }) {
+  return <iframe src={url} title="PDF preview" className="pdf-preview-frame" />;
+}
+
 const { StorageBrowser, useView } = createStorageBrowser({
   config: createAmplifyAuthAdapter(),
+  filePreview: {
+    fileTypeResolver: (fileData) =>
+      fileData.key?.toLowerCase().endsWith('.pdf') ? 'pdf' : undefined,
+    rendererResolver: (fileType) => (fileType === 'pdf' ? PdfPreview : undefined),
+  },
 });
 
 function LocationDetailViewWithExtras() {

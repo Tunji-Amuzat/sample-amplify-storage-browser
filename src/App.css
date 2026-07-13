@@ -149,3 +149,9 @@
   flex: 1;
   min-width: 0;
 }
+
+.pdf-preview-frame {
+  width: 100%;
+  height: 70vh;
+  border: none;
+}
