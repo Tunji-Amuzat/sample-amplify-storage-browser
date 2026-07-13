@@ -27,10 +27,22 @@ backend.addOutput({
         aws_region: 'eu-west-2',
         paths: {
           'oyetunji/*': {
-            authenticated: ['get', 'list'],
+            authenticated: ['get', 'list', 'write', 'delete'],
           },
           'kelvin/*': {
-            authenticated: ['get', 'list'],
+            authenticated: ['get', 'list', 'write', 'delete'],
+          },
+          'application-files/*': {
+            authenticated: ['get', 'list', 'write', 'delete'],
+          },
+          'folder-a/*': {
+            authenticated: ['get', 'list', 'write', 'delete'],
+          },
+          'folder-b/*': {
+            authenticated: ['get', 'list', 'write', 'delete'],
+          },
+          'folder-c/*': {
+            authenticated: ['get', 'list', 'write', 'delete'],
           },
         },
       } as any,
@@ -43,7 +55,7 @@ const authPolicy = new Policy(backend.stack, 'customBucketAuthPolicy', {
   statements: [
     new PolicyStatement({
       effect: Effect.ALLOW,
-      actions: ['s3:GetObject'],
+      actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
       resources: [`${existingBucket.bucketArn}/*`],
     }),
     new PolicyStatement({
@@ -52,7 +64,12 @@ const authPolicy = new Policy(backend.stack, 'customBucketAuthPolicy', {
       resources: [existingBucket.bucketArn, `${existingBucket.bucketArn}/*`],
       conditions: {
         StringLike: {
-          's3:prefix': ['oyetunji/*', 'oyetunji/', 'kelvin/*', 'kelvin/'],
+          's3:prefix': ['oyetunji/*', 'oyetunji/', 
+            'kelvin/*', 'kelvin/',
+            'application-files/*', 'application-files/',
+            'folder-a/*', 'folder-a/',
+            'folder-b/*', 'folder-b/',
+            'folder-c/*', 'folder-c/',],
         },
       },
     }),
