@@ -9,6 +9,7 @@ import './App.css';
 import config from '../amplify_outputs.json';
 import { Amplify } from 'aws-amplify';
 import { Authenticator, Button } from '@aws-amplify/ui-react';
+import { ProfilePanel } from './ProfilePanel';
 
 Amplify.configure(config);
 
@@ -110,30 +111,46 @@ function LocationDetailViewWithExtras() {
   );
 }
 
+type View = 'browser' | 'profile';
+
 function App() {
   const [hasLocation, setHasLocation] = useState(false);
+  const [view, setView] = useState<View>('browser');
 
   return (
     <Authenticator hideSignUp={true}>
       {({ signOut }) => (
         <>
           <div className="header">
+            {view !== 'browser' && (
+              <Button onClick={() => setView('browser')} variation="link">
+                Back to files
+              </Button>
+            )}
+            {view !== 'profile' && (
+              <Button onClick={() => setView('profile')} variation="link">
+                My profile
+              </Button>
+            )}
             <Button onClick={signOut} variation="link">
               Sign out
             </Button>
           </div>
-          <StorageBrowser.Provider
-            onValueChange={(event) => setHasLocation(!!event.location)}
-          >
-            {hasLocation ? (
-              <>
-                <LocationDetailViewWithExtras />
-                <StorageBrowser.LocationActionView />
-              </>
-            ) : (
-              <StorageBrowser.LocationsView />
-            )}
-          </StorageBrowser.Provider>
+          {view === 'profile' && <ProfilePanel />}
+          {view === 'browser' && (
+            <StorageBrowser.Provider
+              onValueChange={(event) => setHasLocation(!!event.location)}
+            >
+              {hasLocation ? (
+                <>
+                  <LocationDetailViewWithExtras />
+                  <StorageBrowser.LocationActionView />
+                </>
+              ) : (
+                <StorageBrowser.LocationsView />
+              )}
+            </StorageBrowser.Provider>
+          )}
         </>
       )}
     </Authenticator>
