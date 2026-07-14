@@ -4,6 +4,10 @@
   --gtbank-orange-light: #f5ede9;
 }
 
+body {
+  background: #f7f6f5;
+}
+
 #root {
   margin: 0 auto;
   padding: 2rem;
@@ -14,8 +18,12 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0.5rem 0;
-  margin-bottom: 1rem;
+  gap: 0.25rem;
+  padding: 0.6rem 2rem;
+  margin: -2rem -2rem 2rem;
+  background: #fff;
+  border-bottom: 1px solid #ececec;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.04);
 }
 
 .header-left {
@@ -48,7 +56,21 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* Amplify Authenticator overrides */
+/* Swap the default teal brand color for GTBank orange across all Amplify UI
+   components (links, sort indicators, pagination, focus states) */
+[data-amplify-theme] {
+  --amplify-colors-primary-10: #fdeee7;
+  --amplify-colors-primary-20: #fbd9c9;
+  --amplify-colors-primary-40: #f5a988;
+  --amplify-colors-primary-60: #ee7440;
+  --amplify-colors-primary-80: var(--gtbank-orange);
+  --amplify-colors-primary-90: var(--gtbank-orange-dark);
+  --amplify-colors-primary-100: #a33007;
+  --amplify-components-link-color: var(--gtbank-orange);
+  --amplify-components-link-hover-color: var(--gtbank-orange-dark);
+}
+
+/* Amplify Authenticator (login screen) */
 [data-amplify-authenticator] {
   --amplify-components-button-primary-background-color: var(--gtbank-orange);
   --amplify-components-button-primary-hover-background-color: var(--gtbank-orange-dark);
@@ -57,6 +79,41 @@
   --amplify-components-tabs-item-active-border-color: var(--gtbank-orange);
   --amplify-components-fieldcontrol-focus-border-color: var(--gtbank-orange);
   --amplify-components-button-link-color: var(--gtbank-orange);
+  --amplify-components-authenticator-router-border-width: 0;
+  --amplify-components-authenticator-router-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  margin: -2rem;
+  padding: 2rem;
+  background:
+    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(232, 69, 10, 0.08), transparent),
+    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(232, 69, 10, 0.06), transparent),
+    #faf8f7;
+}
+
+[data-amplify-authenticator] [data-amplify-router] {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.auth-header {
+  text-align: center;
+  padding-bottom: 1.5rem;
+}
+
+.auth-header h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.auth-header p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #888;
 }
 
 /* Amplify UI Button overrides */
@@ -70,6 +127,28 @@
 
 .amplify-button[data-variation='link'] {
   color: var(--gtbank-orange) !important;
+}
+
+/* File browser card */
+.browser-card {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 14px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.07);
+  padding: 1.5rem 1.75rem;
+  text-align: left;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Storage browser table polish */
+.browser-card .amplify-storage-browser__table tbody tr:hover td {
+  background: #fbf7f5;
+}
+
+.browser-card h2,
+.browser-card h3 {
+  text-align: left;
 }
 
 /* Date filter + selection counter toolbar */

@@ -113,12 +113,23 @@ function LocationDetailViewWithExtras() {
 
 type View = 'browser' | 'profile';
 
+const authComponents = {
+  Header() {
+    return (
+      <div className="auth-header">
+        <h1>Welcome back</h1>
+        <p>Sign in to access your documents</p>
+      </div>
+    );
+  },
+};
+
 function App() {
   const [hasLocation, setHasLocation] = useState(false);
   const [view, setView] = useState<View>('browser');
 
   return (
-    <Authenticator hideSignUp={true}>
+    <Authenticator hideSignUp={true} components={authComponents}>
       {({ signOut }) => (
         <>
           <div className="header">
@@ -138,18 +149,20 @@ function App() {
           </div>
           {view === 'profile' && <ProfilePanel />}
           {view === 'browser' && (
-            <StorageBrowser.Provider
-              onValueChange={(event) => setHasLocation(!!event.location)}
-            >
-              {hasLocation ? (
-                <>
-                  <LocationDetailViewWithExtras />
-                  <StorageBrowser.LocationActionView />
-                </>
-              ) : (
-                <StorageBrowser.LocationsView />
-              )}
-            </StorageBrowser.Provider>
+            <div className="browser-card">
+              <StorageBrowser.Provider
+                onValueChange={(event) => setHasLocation(!!event.location)}
+              >
+                {hasLocation ? (
+                  <>
+                    <LocationDetailViewWithExtras />
+                    <StorageBrowser.LocationActionView />
+                  </>
+                ) : (
+                  <StorageBrowser.LocationsView />
+                )}
+              </StorageBrowser.Provider>
+            </div>
           )}
         </>
       )}
