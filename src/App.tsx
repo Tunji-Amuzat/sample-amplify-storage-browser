@@ -8,8 +8,9 @@ import './App.css';
 
 import config from '../amplify_outputs.json';
 import { Amplify } from 'aws-amplify';
-import { Authenticator, Button } from '@aws-amplify/ui-react';
+import { Authenticator } from '@aws-amplify/ui-react';
 import { ProfilePanel } from './ProfilePanel';
+import { useCurrentUser } from './useCurrentUser';
 
 Amplify.configure(config);
 
@@ -76,8 +77,9 @@ function LocationDetailViewWithExtras() {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
-  // Only render when a location is selected and no action (upload/delete/etc.) is active
-  if (!state.location.current || state.actionType) return null;
+  // Actions render in a modal over this view, so the list stays put behind them
+  // instead of the whole page navigating away.
+  if (!state.location.current) return null;
 
   const isFiltering = fromDate || toDate;
 
@@ -177,7 +179,119 @@ function RootLocationGate() {
   return <StorageBrowser.LocationsView />;
 }
 
+/**
+ * Renders the file list with actions layered over it in a modal, and refreshes
+ * the list once an action closes so new folders and uploads appear without a
+ * manual page refresh.
+ */
+function LocationWorkspace() {
+  const state = useView('LocationDetail');
+  const { actionType, onRefresh } = state;
+
+  const refresh = useRef(onRefresh);
+  refresh.current = onRefresh;
+
+  const previousAction = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (previousAction.current && !actionType) refresh.current();
+    previousAction.current = actionType;
+  }, [actionType]);
+
+  return (
+    <>
+      <LocationDetailViewWithExtras />
+      {actionType && (
+        <div className="modal-scrim" role="presentation">
+          <div className="modal-panel" role="dialog" aria-modal="true">
+            <StorageBrowser.LocationActionView />
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 type View = 'browser' | 'profile';
+
+function FilesIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v7.5A1.5 1.5 0 0 1 17.5 19h-13A1.5 1.5 0 0 1 3 17.5v-10Z" />
+    </svg>
+  );
+}
+
+function ProfileIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <circle cx="12" cy="8.5" r="3.5" />
+      <path d="M5 19.5a7 7 0 0 1 14 0" />
+    </svg>
+  );
+}
+
+function SignOutIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="M14 8V6a1.5 1.5 0 0 0-1.5-1.5h-6A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5h6A1.5 1.5 0 0 0 14 18v-2" />
+      <path d="M17 12H9m8 0-2.5-2.5M17 12l-2.5 2.5" />
+    </svg>
+  );
+}
+
+function Sidebar({
+  view,
+  onNavigate,
+  onSignOut,
+}: {
+  view: View;
+  onNavigate: (view: View) => void;
+  onSignOut: () => void;
+}) {
+  const user = useCurrentUser();
+
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-brand">
+        <BrandMark />
+        <span>Bastion Vault</span>
+      </div>
+
+      <nav className="sidebar-nav">
+        <button
+          className={`sidebar-link${view === 'browser' ? ' is-active' : ''}`}
+          onClick={() => onNavigate('browser')}
+        >
+          <FilesIcon />
+          Files
+        </button>
+        <button
+          className={`sidebar-link${view === 'profile' ? ' is-active' : ''}`}
+          onClick={() => onNavigate('profile')}
+        >
+          <ProfileIcon />
+          Profile
+        </button>
+      </nav>
+
+      <div className="sidebar-footer">
+        <div className="sidebar-user">
+          <div className="sidebar-avatar">{user?.initial ?? '·'}</div>
+          <div className="sidebar-user-text">
+            <span className="sidebar-user-email">{user?.email ?? 'Signed in'}</span>
+            <span className="sidebar-user-role">
+              {user?.isAdmin ? 'Administrator' : 'Standard user'}
+            </span>
+          </div>
+          <button className="sidebar-signout" onClick={onSignOut} aria-label="Sign out">
+            <SignOutIcon />
+          </button>
+        </div>
+      </div>
+    </aside>
+  );
+}
 
 function BrandMark() {
   return (
@@ -219,40 +333,22 @@ function App() {
   return (
     <Authenticator hideSignUp={true} components={authComponents}>
       {({ signOut }) => (
-        <>
-          <div className="header">
-            {view !== 'browser' && (
-              <Button onClick={() => setView('browser')} variation="link">
-                Back to files
-              </Button>
+        <div className="app-shell">
+          <Sidebar view={view} onNavigate={setView} onSignOut={() => signOut?.()} />
+
+          <main className="app-main">
+            {view === 'profile' && <ProfilePanel />}
+            {view === 'browser' && (
+              <div className="browser-card">
+                <StorageBrowser.Provider
+                  onValueChange={(event) => setHasLocation(!!event.location)}
+                >
+                  {hasLocation ? <LocationWorkspace /> : <RootLocationGate />}
+                </StorageBrowser.Provider>
+              </div>
             )}
-            {view !== 'profile' && (
-              <Button onClick={() => setView('profile')} variation="link">
-                My profile
-              </Button>
-            )}
-            <Button onClick={signOut} variation="link">
-              Sign out
-            </Button>
-          </div>
-          {view === 'profile' && <ProfilePanel />}
-          {view === 'browser' && (
-            <div className="browser-card">
-              <StorageBrowser.Provider
-                onValueChange={(event) => setHasLocation(!!event.location)}
-              >
-                {hasLocation ? (
-                  <>
-                    <LocationDetailViewWithExtras />
-                    <StorageBrowser.LocationActionView />
-                  </>
-                ) : (
-                  <RootLocationGate />
-                )}
-              </StorageBrowser.Provider>
-            </div>
-          )}
-        </>
+          </main>
+        </div>
       )}
     </Authenticator>
   );
