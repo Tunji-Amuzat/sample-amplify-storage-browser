@@ -77,8 +77,19 @@ function LocationDetailViewWithExtras() {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
-  // Actions render in a modal over this view, so the list stays put behind them
-  // instead of the whole page navigating away.
+  const { actionType, onRefresh } = state;
+
+  const refresh = useRef(onRefresh);
+  refresh.current = onRefresh;
+
+  // Refresh the listing once an action closes so new folders and uploads appear
+  // without a manual page refresh.
+  const previousAction = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (previousAction.current && !actionType) refresh.current();
+    previousAction.current = actionType;
+  }, [actionType]);
+
   if (!state.location.current) return null;
 
   const isFiltering = fromDate || toDate;
@@ -98,6 +109,7 @@ function LocationDetailViewWithExtras() {
   const selectedCount = state.dataItems?.length ?? 0;
 
   return (
+    <>
     <StorageBrowser.LocationDetailView.Provider {...state} pageItems={filteredItems}>
       <StorageBrowser.LocationDetailView.Navigation />
       <div className="detail-actions">
@@ -154,6 +166,14 @@ function LocationDetailViewWithExtras() {
         <StorageBrowser.LocationDetailView.FilePreview />
       </div>
     </StorageBrowser.LocationDetailView.Provider>
+    {actionType && (
+      <div className="modal-scrim" role="presentation">
+        <div className="modal-panel" role="dialog" aria-modal="true">
+          <StorageBrowser.LocationActionView />
+        </div>
+      </div>
+    )}
+    </>
   );
 }
 
@@ -177,39 +197,6 @@ function RootLocationGate() {
   if (only) return null;
 
   return <StorageBrowser.LocationsView />;
-}
-
-/**
- * Renders the file list with actions layered over it in a modal, and refreshes
- * the list once an action closes so new folders and uploads appear without a
- * manual page refresh.
- */
-function LocationWorkspace() {
-  const state = useView('LocationDetail');
-  const { actionType, onRefresh } = state;
-
-  const refresh = useRef(onRefresh);
-  refresh.current = onRefresh;
-
-  const previousAction = useRef<string | undefined>(undefined);
-
-  useEffect(() => {
-    if (previousAction.current && !actionType) refresh.current();
-    previousAction.current = actionType;
-  }, [actionType]);
-
-  return (
-    <>
-      <LocationDetailViewWithExtras />
-      {actionType && (
-        <div className="modal-scrim" role="presentation">
-          <div className="modal-panel" role="dialog" aria-modal="true">
-            <StorageBrowser.LocationActionView />
-          </div>
-        </div>
-      )}
-    </>
-  );
 }
 
 type View = 'browser' | 'profile';
@@ -343,7 +330,7 @@ function App() {
                 <StorageBrowser.Provider
                   onValueChange={(event) => setHasLocation(!!event.location)}
                 >
-                  {hasLocation ? <LocationWorkspace /> : <RootLocationGate />}
+                  {hasLocation ? <LocationDetailViewWithExtras /> : <RootLocationGate />}
                 </StorageBrowser.Provider>
               </div>
             )}
