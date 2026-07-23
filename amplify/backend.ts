@@ -15,6 +15,19 @@ const existingBucket = Bucket.fromBucketAttributes(existingBucketStack, 'amplify
   region: 'eu-west-2',
 });
 
+/**
+ * Single root location.
+ *
+ * A "location" is an IAM grant, not a folder — adding one requires a code change
+ * and a redeploy. By granting one root prefix instead of a fixed list, everything
+ * inside it becomes an ordinary S3 folder that users can create, rename and nest
+ * from the UI with no redeploy.
+ *
+ * Per-folder access control is not expressed here. That needs per-session scoped
+ * credentials rather than one static policy shared by every authenticated user.
+ */
+const ROOT_PREFIX = 'vault';
+
 // Wire the existing bucket into amplify_outputs.json
 backend.addOutput({
   storage: {
@@ -26,22 +39,7 @@ backend.addOutput({
         bucket_name: existingBucket.bucketName,
         aws_region: 'eu-west-2',
         paths: {
-          'oyetunji/*': {
-            authenticated: ['get', 'list', 'write', 'delete'],
-          },
-          'kelvin/*': {
-            authenticated: ['get', 'list', 'write', 'delete'],
-          },
-          'application-files/*': {
-            authenticated: ['get', 'list', 'write', 'delete'],
-          },
-          'folder-a/*': {
-            authenticated: ['get', 'list', 'write', 'delete'],
-          },
-          'folder-b/*': {
-            authenticated: ['get', 'list', 'write', 'delete'],
-          },
-          'folder-c/*': {
+          [`${ROOT_PREFIX}/*`]: {
             authenticated: ['get', 'list', 'write', 'delete'],
           },
         },
@@ -64,12 +62,7 @@ const authPolicy = new Policy(backend.stack, 'customBucketAuthPolicy', {
       resources: [existingBucket.bucketArn, `${existingBucket.bucketArn}/*`],
       conditions: {
         StringLike: {
-          's3:prefix': ['oyetunji/*', 'oyetunji/', 
-            'kelvin/*', 'kelvin/',
-            'application-files/*', 'application-files/',
-            'folder-a/*', 'folder-a/',
-            'folder-b/*', 'folder-b/',
-            'folder-c/*', 'folder-c/',],
+          's3:prefix': [`${ROOT_PREFIX}/*`, `${ROOT_PREFIX}/`],
         },
       },
     }),

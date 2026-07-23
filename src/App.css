@@ -65,7 +65,21 @@ body {
 }
 
 /* Replace Amplify's default teal brand colour with the Bastion Vault ramp across
-   all UI components (links, sort indicators, pagination, focus states) */
+   all UI components (links, sort indicators, pagination, focus states).
+   The Storage Browser stylesheet re-points the whole primary ramp at teal, and
+   also uses --amplify-colors-teal-* directly in places, so both are remapped. */
+:root,
+[data-amplify-theme] {
+  --amplify-colors-teal-10: var(--bv-lilac-pale);
+  --amplify-colors-teal-20: var(--bv-lilac-light);
+  --amplify-colors-teal-40: var(--bv-lilac);
+  --amplify-colors-teal-60: var(--bv-periwinkle);
+  --amplify-colors-teal-80: var(--bv-indigo-bright);
+  --amplify-colors-teal-90: var(--bv-indigo);
+  --amplify-colors-teal-100: var(--bv-navy);
+}
+
+:root,
 [data-amplify-theme] {
   --amplify-colors-primary-10: var(--bv-lilac-pale);
   --amplify-colors-primary-20: var(--bv-lilac-light);
@@ -192,6 +206,51 @@ body {
 .browser-card h2,
 .browser-card h3 {
   text-align: left;
+}
+
+/* Primary actions — surfaced from the overflow menu */
+.detail-actions {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.85rem 0 0.35rem;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--bv-lilac);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--bv-navy);
+  padding: 0.45rem 0.95rem;
+  font-size: 0.87rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.action-button:hover {
+  background: var(--bv-lilac-pale);
+  border-color: var(--bv-periwinkle);
+}
+
+.action-button--primary {
+  background: var(--bv-navy);
+  border-color: var(--bv-navy);
+  color: #fff;
+}
+
+.action-button--primary:hover {
+  background: var(--bv-navy-alt);
+  border-color: var(--bv-navy-alt);
+}
+
+.action-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(86, 102, 255, 0.25);
 }
 
 /* Date filter + selection counter toolbar */

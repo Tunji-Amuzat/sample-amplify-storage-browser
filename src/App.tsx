@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   createAmplifyAuthAdapter,
   createStorageBrowser,
@@ -65,6 +65,17 @@ function LocationDetailViewWithExtras() {
   return (
     <StorageBrowser.LocationDetailView.Provider {...state} pageItems={filteredItems}>
       <StorageBrowser.LocationDetailView.Navigation />
+      <div className="detail-actions">
+        <button
+          className="action-button action-button--primary"
+          onClick={() => state.onActionSelect('createFolder')}
+        >
+          New folder
+        </button>
+        <button className="action-button" onClick={() => state.onActionSelect('upload')}>
+          Upload
+        </button>
+      </div>
       <div className="detail-toolbar">
         <div className="date-filter">
           <label>Date range</label>
@@ -109,6 +120,28 @@ function LocationDetailViewWithExtras() {
       </div>
     </StorageBrowser.LocationDetailView.Provider>
   );
+}
+
+/**
+ * The vault grants a single root location, so the locations list would be a
+ * one-row table. Navigate straight into it and let users work with real folders
+ * instead. Falls back to the normal list if more than one location is granted.
+ */
+function RootLocationGate() {
+  const state = useView('Locations');
+  const entered = useRef(false);
+
+  const only = state.pageItems.length === 1 ? state.pageItems[0] : undefined;
+
+  useEffect(() => {
+    if (entered.current || !only) return;
+    entered.current = true;
+    state.onNavigate(only);
+  }, [only, state]);
+
+  if (only) return null;
+
+  return <StorageBrowser.LocationsView />;
 }
 
 type View = 'browser' | 'profile';
@@ -181,7 +214,7 @@ function App() {
                     <StorageBrowser.LocationActionView />
                   </>
                 ) : (
-                  <StorageBrowser.LocationsView />
+                  <RootLocationGate />
                 )}
               </StorageBrowser.Provider>
             </div>
