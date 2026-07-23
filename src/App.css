@@ -1,11 +1,19 @@
 :root {
-  --gtbank-orange: #e8450a;
-  --gtbank-orange-dark: #c73a08;
-  --gtbank-orange-light: #f5ede9;
+  /* Bastion Vault palette — matches the product landing page */
+  --bv-navy: #070b63;
+  --bv-navy-alt: #06116f;
+  --bv-indigo: #5469d4;
+  --bv-indigo-bright: #5666ff;
+  --bv-periwinkle: #6d75ff;
+  --bv-lilac: #c8c9ff;
+  --bv-lilac-light: #d9d8ff;
+  --bv-lilac-pale: #f5f6fe;
+  --bv-ink: #12132b;
+  --bv-muted: #7a7c99;
 }
 
 body {
-  background: #f7f6f5;
+  background: var(--bv-lilac-pale);
 }
 
 #root {
@@ -56,31 +64,31 @@ body {
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* Swap the default teal brand color for GTBank orange across all Amplify UI
-   components (links, sort indicators, pagination, focus states) */
+/* Replace Amplify's default teal brand colour with the Bastion Vault ramp across
+   all UI components (links, sort indicators, pagination, focus states) */
 [data-amplify-theme] {
-  --amplify-colors-primary-10: #fdeee7;
-  --amplify-colors-primary-20: #fbd9c9;
-  --amplify-colors-primary-40: #f5a988;
-  --amplify-colors-primary-60: #ee7440;
-  --amplify-colors-primary-80: var(--gtbank-orange);
-  --amplify-colors-primary-90: var(--gtbank-orange-dark);
-  --amplify-colors-primary-100: #a33007;
-  --amplify-components-link-color: var(--gtbank-orange);
-  --amplify-components-link-hover-color: var(--gtbank-orange-dark);
+  --amplify-colors-primary-10: var(--bv-lilac-pale);
+  --amplify-colors-primary-20: var(--bv-lilac-light);
+  --amplify-colors-primary-40: var(--bv-lilac);
+  --amplify-colors-primary-60: var(--bv-periwinkle);
+  --amplify-colors-primary-80: var(--bv-indigo-bright);
+  --amplify-colors-primary-90: var(--bv-indigo);
+  --amplify-colors-primary-100: var(--bv-navy);
+  --amplify-components-link-color: var(--bv-indigo-bright);
+  --amplify-components-link-hover-color: var(--bv-navy);
 }
 
 /* Amplify Authenticator (login screen) */
 [data-amplify-authenticator] {
-  --amplify-components-button-primary-background-color: var(--gtbank-orange);
-  --amplify-components-button-primary-hover-background-color: var(--gtbank-orange-dark);
-  --amplify-components-button-primary-active-background-color: var(--gtbank-orange-dark);
-  --amplify-components-tabs-item-active-color: var(--gtbank-orange);
-  --amplify-components-tabs-item-active-border-color: var(--gtbank-orange);
-  --amplify-components-fieldcontrol-focus-border-color: var(--gtbank-orange);
-  --amplify-components-button-link-color: var(--gtbank-orange);
+  --amplify-components-button-primary-background-color: var(--bv-navy);
+  --amplify-components-button-primary-hover-background-color: var(--bv-navy-alt);
+  --amplify-components-button-primary-active-background-color: var(--bv-navy-alt);
+  --amplify-components-tabs-item-active-color: var(--bv-indigo-bright);
+  --amplify-components-tabs-item-active-border-color: var(--bv-indigo-bright);
+  --amplify-components-fieldcontrol-focus-border-color: var(--bv-indigo-bright);
+  --amplify-components-button-link-color: var(--bv-indigo-bright);
   --amplify-components-authenticator-router-border-width: 0;
-  --amplify-components-authenticator-router-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --amplify-components-authenticator-router-box-shadow: 0 18px 48px rgba(7, 11, 99, 0.12);
 
   display: grid;
   place-items: center;
@@ -88,45 +96,80 @@ body {
   margin: -2rem;
   padding: 2rem;
   background:
-    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(232, 69, 10, 0.08), transparent),
-    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(232, 69, 10, 0.06), transparent),
-    #faf8f7;
+    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(86, 102, 255, 0.14), transparent),
+    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(7, 11, 99, 0.08), transparent),
+    var(--bv-lilac-pale);
 }
 
 [data-amplify-authenticator] [data-amplify-router] {
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
 }
 
+[data-amplify-authenticator] .amplify-field-group__control:focus-within {
+  border-color: var(--bv-indigo-bright);
+  box-shadow: 0 0 0 3px rgba(86, 102, 255, 0.16);
+}
+
+/* Product identity above the sign-in card */
 .auth-header {
   text-align: center;
   padding-bottom: 1.5rem;
 }
 
+.auth-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-brand svg {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.auth-brand-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--bv-navy);
+}
+
 .auth-header h1 {
   margin: 0 0 0.35rem;
-  font-size: 1.4rem;
+  font-size: 1.55rem;
   font-weight: 700;
-  color: #222;
+  letter-spacing: -0.02em;
+  color: var(--bv-ink);
 }
 
 .auth-header p {
   margin: 0;
-  font-size: 0.88rem;
-  color: #888;
+  font-size: 0.9rem;
+  color: var(--bv-muted);
+}
+
+.auth-footer {
+  margin-top: 1.75rem;
+  font-size: 0.78rem;
+  color: var(--bv-muted);
+  text-align: center;
 }
 
 /* Amplify UI Button overrides */
 .amplify-button--primary {
-  background-color: var(--gtbank-orange) !important;
+  background-color: var(--bv-navy) !important;
 }
 
 .amplify-button--primary:hover {
-  background-color: var(--gtbank-orange-dark) !important;
+  background-color: var(--bv-navy-alt) !important;
 }
 
 .amplify-button[data-variation='link'] {
-  color: var(--gtbank-orange) !important;
+  color: var(--bv-indigo-bright) !important;
 }
 
 /* File browser card */
@@ -143,7 +186,7 @@ body {
 
 /* Storage browser table polish */
 .browser-card .amplify-storage-browser__table tbody tr:hover td {
-  background: #fbf7f5;
+  background: var(--bv-lilac-pale);
 }
 
 .browser-card h2,
@@ -187,8 +230,8 @@ body {
 
 .date-filter input[type='date']:focus {
   outline: none;
-  border-color: var(--gtbank-orange);
-  box-shadow: 0 0 0 2px var(--gtbank-orange-light);
+  border-color: var(--bv-indigo-bright);
+  box-shadow: 0 0 0 2px var(--bv-lilac-light);
 }
 
 .clear-filter {
@@ -208,7 +251,7 @@ body {
 
 .selected-badge {
   margin-left: auto;
-  background-color: var(--gtbank-orange);
+  background-color: var(--bv-indigo-bright);
   color: white;
   border-radius: 20px;
   padding: 0.25rem 0.8rem;
@@ -268,7 +311,7 @@ body {
   align-items: center;
   gap: 1.25rem;
   padding: 2rem 2rem 1.75rem;
-  background: linear-gradient(135deg, var(--gtbank-orange-light) 0%, #fff 70%);
+  background: linear-gradient(135deg, var(--bv-lilac-light) 0%, #fff 70%);
   border-bottom: 1px solid #f0f0f0;
 }
 
@@ -277,14 +320,14 @@ body {
   height: 64px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--gtbank-orange) 0%, var(--gtbank-orange-dark) 100%);
+  background: linear-gradient(135deg, var(--bv-indigo-bright) 0%, var(--bv-navy) 100%);
   color: #fff;
   font-size: 1.6rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 10px rgba(232, 69, 10, 0.35);
+  box-shadow: 0 3px 10px rgba(7, 11, 99, 0.28);
 }
 
 .profile-identity {
@@ -312,8 +355,8 @@ body {
 }
 
 .profile-role-badge.admin {
-  background: var(--gtbank-orange-light);
-  color: var(--gtbank-orange-dark);
+  background: var(--bv-lilac-light);
+  color: var(--bv-navy);
 }
 
 .profile-details {
@@ -364,9 +407,9 @@ body {
   padding: 0.15rem 0.6rem;
   border-radius: 999px;
   font-size: 0.78rem;
-  background: var(--gtbank-orange-light);
-  color: var(--gtbank-orange-dark);
-  border: 1px solid rgba(232, 69, 10, 0.25);
+  background: var(--bv-lilac-light);
+  color: var(--bv-navy);
+  border: 1px solid rgba(86, 102, 255, 0.28);
 }
 
 .profile-note {

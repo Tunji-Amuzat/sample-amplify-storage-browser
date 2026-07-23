@@ -113,14 +113,36 @@ function LocationDetailViewWithExtras() {
 
 type View = 'browser' | 'profile';
 
+function BrandMark() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12 2 4 5.2v6.3c0 4.6 3.2 8.9 8 10.5 4.8-1.6 8-5.9 8-10.5V5.2L12 2Z"
+        fill="var(--bv-navy)"
+      />
+      <path
+        d="M12 9.6a1.9 1.9 0 0 0-1 3.5v1.7a1 1 0 0 0 2 0v-1.7a1.9 1.9 0 0 0-1-3.5Z"
+        fill="var(--bv-lilac)"
+      />
+    </svg>
+  );
+}
+
 const authComponents = {
   Header() {
     return (
       <div className="auth-header">
+        <div className="auth-brand">
+          <BrandMark />
+          <span className="auth-brand-name">Bastion Vault</span>
+        </div>
         <h1>Welcome back</h1>
         <p>Sign in to access your documents</p>
       </div>
     );
+  },
+  Footer() {
+    return <p className="auth-footer">Secure enterprise data access control</p>;
   },
 };
 
