@@ -325,15 +325,15 @@ function App() {
 
           <main className="app-main">
             {view === 'profile' && <ProfilePanel />}
-            {view === 'browser' && (
-              <div className="browser-card">
-                <StorageBrowser.Provider
-                  onValueChange={(event) => setHasLocation(!!event.location)}
-                >
-                  {hasLocation ? <LocationDetailViewWithExtras /> : <RootLocationGate />}
-                </StorageBrowser.Provider>
-              </div>
-            )}
+            {/* Kept mounted across view changes. Unmounting the provider resets the
+                browser's location, which left the file list blank on the way back. */}
+            <div className="browser-card" hidden={view !== 'browser'}>
+              <StorageBrowser.Provider
+                onValueChange={(event) => setHasLocation(!!event.location)}
+              >
+                {hasLocation ? <LocationDetailViewWithExtras /> : <RootLocationGate />}
+              </StorageBrowser.Provider>
+            </div>
           </main>
         </div>
       )}
