@@ -227,7 +227,7 @@ function SignOutIcon() {
   );
 }
 
-function Sidebar({
+function TopNav({
   view,
   onNavigate,
   onSignOut,
@@ -239,44 +239,44 @@ function Sidebar({
   const user = useCurrentUser();
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-brand">
-        <BrandMark />
-        <span>Bastion Vault</span>
-      </div>
+    <header className="topnav">
+      <div className="topnav-inner">
+        <div className="topnav-brand">
+          <BrandMark />
+          <span>Bastion Vault</span>
+        </div>
 
-      <nav className="sidebar-nav">
-        <button
-          className={`sidebar-link${view === 'browser' ? ' is-active' : ''}`}
-          onClick={() => onNavigate('browser')}
-        >
-          <FilesIcon />
-          Files
-        </button>
-        <button
-          className={`sidebar-link${view === 'profile' ? ' is-active' : ''}`}
-          onClick={() => onNavigate('profile')}
-        >
-          <ProfileIcon />
-          Profile
-        </button>
-      </nav>
+        <nav className="topnav-links">
+          <button
+            className={`topnav-link${view === 'browser' ? ' is-active' : ''}`}
+            onClick={() => onNavigate('browser')}
+          >
+            <FilesIcon />
+            Files
+          </button>
+          <button
+            className={`topnav-link${view === 'profile' ? ' is-active' : ''}`}
+            onClick={() => onNavigate('profile')}
+          >
+            <ProfileIcon />
+            Profile
+          </button>
+        </nav>
 
-      <div className="sidebar-footer">
-        <div className="sidebar-user">
-          <div className="sidebar-avatar">{user?.initial ?? '·'}</div>
-          <div className="sidebar-user-text">
-            <span className="sidebar-user-email">{user?.email ?? 'Signed in'}</span>
-            <span className="sidebar-user-role">
+        <div className="topnav-user">
+          <div className="topnav-avatar">{user?.initial ?? '·'}</div>
+          <div className="topnav-user-text">
+            <span className="topnav-user-email">{user?.email ?? 'Signed in'}</span>
+            <span className="topnav-user-role">
               {user?.isAdmin ? 'Administrator' : 'Standard user'}
             </span>
           </div>
-          <button className="sidebar-signout" onClick={onSignOut} aria-label="Sign out">
+          <button className="topnav-signout" onClick={onSignOut} aria-label="Sign out">
             <SignOutIcon />
           </button>
         </div>
       </div>
-    </aside>
+    </header>
   );
 }
 
@@ -321,9 +321,17 @@ function App() {
     <Authenticator hideSignUp={true} components={authComponents}>
       {({ signOut }) => (
         <div className="app-shell">
-          <Sidebar view={view} onNavigate={setView} onSignOut={() => signOut?.()} />
+          <TopNav view={view} onNavigate={setView} onSignOut={() => signOut?.()} />
 
           <main className="app-main">
+            <div className="page-heading">
+              <h1>{view === 'profile' ? 'Profile' : 'Files'}</h1>
+              <p>
+                {view === 'profile'
+                  ? 'Your account and access details'
+                  : 'Browse and manage your documents'}
+              </p>
+            </div>
             {view === 'profile' && <ProfilePanel />}
             {/* Kept mounted across view changes. Unmounting the provider resets the
                 browser's location, which left the file list blank on the way back. */}

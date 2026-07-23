@@ -22,128 +22,115 @@ body {
   text-align: left;
 }
 
-/* App shell — fixed sidebar, scrolling content */
+/* App shell — top bar, centred content column */
 .app-shell {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  width: 236px;
-  padding: 0 0 1.1rem;
+.topnav {
   background: #fff;
-  border-right: 1px solid var(--bv-lilac-light);
-  color: var(--bv-ink);
+  border-bottom: 1px solid var(--bv-lilac-light);
 }
 
-.sidebar-brand {
+.topnav-inner {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 1.35rem 1.15rem 1.6rem;
-  font-size: 1.02rem;
+  gap: 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0.7rem 2rem;
+}
+
+.topnav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--bv-navy);
 }
 
-.sidebar-brand svg {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
+.topnav-brand svg {
+  width: 22px;
+  height: 22px;
 }
 
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-
-.sidebar-link {
-  position: relative;
+.topnav-links {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  width: 100%;
-  padding: 0.62rem 1.15rem;
+  gap: 0.25rem;
+}
+
+.topnav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
   border: none;
-  border-radius: 0;
+  border-radius: 8px;
   background: none;
   color: var(--bv-muted);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
-  text-align: left;
   cursor: pointer;
   transition:
     background 0.15s ease,
     color 0.15s ease;
 }
 
-.sidebar-link svg {
-  width: 18px;
-  height: 18px;
+.topnav-link svg {
+  width: 17px;
+  height: 17px;
   flex-shrink: 0;
 }
 
-.sidebar-link:hover {
+.topnav-link:hover {
   background: var(--bv-lilac-pale);
   color: var(--bv-navy);
 }
 
-.sidebar-link.is-active {
+.topnav-link.is-active {
   background: var(--bv-lilac-pale);
   color: var(--bv-navy);
   font-weight: 600;
 }
 
-/* Accent bar marks the active view without flooding the rail with colour */
-.sidebar-link.is-active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--bv-indigo-bright);
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  padding-top: 1rem;
-}
-
-.sidebar-user {
+.topnav-user {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.85rem 1.15rem 0;
-  border-top: 1px solid var(--bv-lilac-light);
+  gap: 0.55rem;
+  margin-left: auto;
+  padding-left: 0.85rem;
+  border-left: 1px solid var(--bv-lilac-light);
 }
 
-.sidebar-avatar {
+.topnav-avatar {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--bv-indigo-bright);
-  font-size: 0.9rem;
+  color: #fff;
+  font-size: 0.85rem;
   font-weight: 700;
 }
 
-.sidebar-user-text {
+.topnav-user-text {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  max-width: 190px;
   line-height: 1.25;
 }
 
-.sidebar-user-email {
+.topnav-user-email {
   font-size: 0.78rem;
   font-weight: 600;
   color: var(--bv-ink);
@@ -152,16 +139,15 @@ body {
   white-space: nowrap;
 }
 
-.sidebar-user-role {
+.topnav-user-role {
   font-size: 0.7rem;
   color: var(--bv-muted);
 }
 
-.sidebar-signout {
+.topnav-signout {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
   padding: 0.35rem;
   border: none;
   border-radius: 6px;
@@ -170,20 +156,39 @@ body {
   cursor: pointer;
 }
 
-.sidebar-signout svg {
+.topnav-signout svg {
   width: 18px;
   height: 18px;
 }
 
-.sidebar-signout:hover {
+.topnav-signout:hover {
   background: var(--bv-lilac-pale);
   color: var(--bv-navy);
 }
 
 .app-main {
-  flex: 1;
-  min-width: 0;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 2rem;
+}
+
+.page-heading {
+  margin-bottom: 1.5rem;
+}
+
+.page-heading h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--bv-ink);
+}
+
+.page-heading p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--bv-muted);
 }
 
 /* Actions layered over the file list rather than replacing the page */
@@ -206,7 +211,7 @@ body {
   padding: 1.6rem 1.75rem;
   border-radius: 14px;
   background: #fff;
-  box-shadow: 0 24px 64px rgba(7, 11, 99, 0.24);
+  box-shadow: 0 12px 32px rgba(7, 11, 99, 0.12);
 }
 
 /* Replace Amplify's default teal brand colour with the Bastion Vault ramp across
@@ -247,7 +252,7 @@ body {
   --amplify-components-fieldcontrol-focus-border-color: var(--bv-indigo-bright);
   --amplify-components-button-link-color: var(--bv-indigo-bright);
   --amplify-components-authenticator-router-border-width: 0;
-  --amplify-components-authenticator-router-box-shadow: 0 18px 48px rgba(7, 11, 99, 0.12);
+  --amplify-components-authenticator-router-box-shadow: 0 4px 16px rgba(7, 11, 99, 0.07);
 
   display: grid;
   place-items: center;
@@ -333,9 +338,9 @@ body {
 /* File browser card */
 .browser-card {
   background: #fff;
-  border: 1px solid #ececec;
+  border: 1px solid var(--bv-lilac-light);
   border-radius: 14px;
-  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 2px rgba(7, 11, 99, 0.04);
   padding: 1.5rem 1.75rem;
   text-align: left;
   max-width: 1440px;
@@ -502,9 +507,9 @@ body {
   width: 100%;
   max-width: 560px;
   background: #fff;
-  border: 1px solid #ececec;
+  border: 1px solid var(--bv-lilac-light);
   border-radius: 14px;
-  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 2px rgba(7, 11, 99, 0.04);
   overflow: hidden;
   text-align: left;
 }
