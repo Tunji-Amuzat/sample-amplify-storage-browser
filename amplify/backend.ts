@@ -16,17 +16,16 @@ const existingBucket = Bucket.fromBucketAttributes(existingBucketStack, 'amplify
 });
 
 /**
- * Single root location.
+ * The vault is rooted at the bucket, so every top-level folder that exists in S3
+ * is listed without being declared here. Folders are ordinary S3 prefixes that
+ * users create from the UI — no redeploy needed to add one.
  *
- * A "location" is an IAM grant, not a folder — adding one requires a code change
- * and a redeploy. By granting one root prefix instead of a fixed list, everything
- * inside it becomes an ordinary S3 folder that users can create, rename and nest
- * from the UI with no redeploy.
+ * The client supplies the browsable location (see `ROOT_PREFIX` in `src/App.tsx`);
+ * this policy only decides what the signed-in user is permitted to reach.
  *
  * Per-folder access control is not expressed here. That needs per-session scoped
  * credentials rather than one static policy shared by every authenticated user.
  */
-const ROOT_PREFIX = 'vault';
 
 // Wire the existing bucket into amplify_outputs.json
 backend.addOutput({
@@ -39,7 +38,7 @@ backend.addOutput({
         bucket_name: existingBucket.bucketName,
         aws_region: 'eu-west-2',
         paths: {
-          [`${ROOT_PREFIX}/*`]: {
+          '*': {
             authenticated: ['get', 'list', 'write', 'delete'],
           },
         },
@@ -56,15 +55,12 @@ const authPolicy = new Policy(backend.stack, 'customBucketAuthPolicy', {
       actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
       resources: [`${existingBucket.bucketArn}/*`],
     }),
+    // Listing is allowed across the bucket so the browser can enumerate whatever
+    // folders actually exist, including ones created from the UI after deploy.
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ['s3:ListBucket'],
       resources: [existingBucket.bucketArn, `${existingBucket.bucketArn}/*`],
-      conditions: {
-        StringLike: {
-          's3:prefix': [`${ROOT_PREFIX}/*`, `${ROOT_PREFIX}/`],
-        },
-      },
     }),
   ],
 });

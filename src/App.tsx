@@ -25,8 +25,41 @@ interface PdfUrlOptions {
   validateObjectExistence?: boolean;
 }
 
+/**
+ * Where the vault starts.
+ *
+ * Empty string = the whole bucket, so every top-level folder that exists in S3
+ * shows up without being declared anywhere. Set this to a prefix such as
+ * `'client-records/'` to root a deployment inside one folder instead.
+ */
+const ROOT_PREFIX = '';
+
+const BUCKET_NAME = config.storage.bucket_name;
+
+/**
+ * A "location" is normally a hardcoded IAM grant, which meant every top-level
+ * folder had to be declared in `backend.ts` and redeployed before it appeared.
+ * Serving a single location rooted at the bucket instead lets the browser list
+ * whatever is actually in S3, and lets users create folders from the UI.
+ */
+const amplifyAdapter = createAmplifyAuthAdapter();
+
 const { StorageBrowser, useView } = createStorageBrowser({
-  config: createAmplifyAuthAdapter(),
+  config: {
+    ...amplifyAdapter,
+    listLocations: async () => ({
+      items: [
+        {
+          bucket: BUCKET_NAME,
+          id: 'vault-root',
+          prefix: ROOT_PREFIX,
+          permissions: ['get', 'list', 'write', 'delete'],
+          type: ROOT_PREFIX === '' ? 'BUCKET' : 'PREFIX',
+        },
+      ],
+      nextToken: undefined,
+    }),
+  },
   filePreview: {
     fileTypeResolver: (fileData) =>
       fileData.key?.toLowerCase().endsWith('.pdf') ? 'pdf' : undefined,
