@@ -1,14 +1,16 @@
 :root {
-  /* Bastion Vault palette — teal brand */
-  --bv-primary: #34a99d; /* primary/base */
+  /* Bastion Vault palette — teal accent on neutral surfaces */
+  --bv-primary: #34a99d; /* primary/base — buttons, links, active */
   --bv-primary-dark: #2b8d83; /* hover */
   --bv-primary-deep: #1e6b63; /* darkest — headings, link hover */
   --bv-accent: #73fded; /* bright cyan — pattern, highlights */
-  --bv-tint: #a6e0d8; /* secondary fills */
-  --bv-tint-light: #d3efea; /* borders */
-  --bv-tint-pale: #effaf8; /* page background, pale fills */
-  --bv-ink: #16231f;
-  --bv-muted: #6b7b78;
+
+  /* Neutral surfaces — teal is an accent, not a wash */
+  --bv-tint: #d4d4d6; /* secondary fills / dividers */
+  --bv-tint-light: #e7e7e8; /* borders */
+  --bv-tint-pale: #f7f7f7; /* page background, header rows, hovers */
+  --bv-ink: #1c1f22; /* near-black text */
+  --bv-muted: #6b7280; /* secondary text */
 }
 
 body {
@@ -567,15 +569,73 @@ body {
   flex-wrap: wrap;
 }
 
-/* Table header row tint */
+/* Table header — neutral row, neutral labels (Amplify colours the sort
+   buttons with the primary teal by default; override to a muted grey) */
 .detail-body thead th {
   background: var(--bv-tint-pale);
-  color: var(--bv-ink);
+  color: var(--bv-muted);
   font-weight: 600;
+}
+
+.detail-body thead th button,
+.detail-body thead th .amplify-button {
+  color: var(--bv-muted) !important;
 }
 
 .detail-body tbody tr:hover td {
   background: var(--bv-tint-pale);
+}
+
+/* Contextual selection bar (replaces the overflow kebab) */
+.selection-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 0.85rem;
+  background: var(--bv-primary-deep);
+  border-radius: 10px;
+  color: #fff;
+}
+
+.selection-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.selection-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.selection-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.selection-actions button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.selection-actions button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.selection-actions button.danger:hover {
+  background: #d9463c;
+  border-color: #d9463c;
 }
 
 /* Date filter + selection counter toolbar */

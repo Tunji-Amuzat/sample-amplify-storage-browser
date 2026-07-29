@@ -161,14 +161,25 @@ function LocationDetailViewWithExtras() {
         </div>
       </div>
 
+      {/* Contextual action bar — appears when rows are selected, replacing the
+          overflow kebab menu (Drive-style). */}
       {selectedCount > 0 && (
-        <div className="detail-toolbar">
-          <span className="selected-badge">
-            {selectedCount} file{selectedCount !== 1 ? 's' : ''} selected
+        <div className="selection-bar">
+          <span className="selection-count">
+            {selectedCount} selected
           </span>
+          <div className="selection-actions">
+            <button onClick={() => state.onActionSelect('download')}>
+              <DownloadIcon />
+              Download
+            </button>
+            <button className="danger" onClick={() => state.onActionSelect('delete')}>
+              <TrashIcon />
+              Delete
+            </button>
+          </div>
         </div>
       )}
-      <StorageBrowser.LocationDetailView.ActionsList />
       <StorageBrowser.LocationDetailView.SearchSubfoldersToggle />
       <StorageBrowser.LocationDetailView.Message />
       <StorageBrowser.LocationDetailView.LoadingIndicator />
@@ -262,6 +273,22 @@ function ChevronDownIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
       <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="M12 4v10m0 0 3.5-3.5M12 14l-3.5-3.5M5 18h14" />
+    </svg>
+  );
+}
+
+function TrashIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="M4 7h16M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m2 0v11a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 7 18V7" />
     </svg>
   );
 }
