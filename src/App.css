@@ -255,6 +255,8 @@ body {
 
   --amplify-components-authenticator-router-box-shadow: none;
   --amplify-components-authenticator-router-background-color: transparent;
+  /* Drop the form's own inset so fields line up with the header and copyright */
+  --amplify-components-authenticator-form-padding: 0;
 
   /* Split screen: form on the left, teal decorative panel on the right.
      The container only exists in the DOM while signed out, so ::after (the
@@ -273,12 +275,20 @@ body {
   align-self: center;
   justify-self: center;
   width: 100%;
-  max-width: 400px;
-  padding: 0 2.5rem;
+  max-width: 460px;
+  padding: 0 2.75rem;
   border: none;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+}
+
+/* Logo pinned to the top-left corner, out of the form's flow */
+[data-amplify-authenticator] .auth-brand {
+  position: absolute;
+  top: 2rem;
+  left: 2.75rem;
+  margin: 0;
 }
 
 /* Right column — teal gradient, line pattern, floating chart card */
