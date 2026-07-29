@@ -1,19 +1,18 @@
 :root {
-  /* Bastion Vault palette — matches the product landing page */
-  --bv-navy: #070b63;
-  --bv-navy-alt: #06116f;
-  --bv-indigo: #5469d4;
-  --bv-indigo-bright: #5666ff;
-  --bv-periwinkle: #6d75ff;
-  --bv-lilac: #c8c9ff;
-  --bv-lilac-light: #d9d8ff;
-  --bv-lilac-pale: #f5f6fe;
-  --bv-ink: #12132b;
-  --bv-muted: #7a7c99;
+  /* Bastion Vault palette — teal brand */
+  --bv-primary: #34a99d; /* primary/base */
+  --bv-primary-dark: #2b8d83; /* hover */
+  --bv-primary-deep: #1e6b63; /* darkest — headings, link hover */
+  --bv-accent: #73fded; /* bright cyan — pattern, highlights */
+  --bv-tint: #a6e0d8; /* secondary fills */
+  --bv-tint-light: #d3efea; /* borders */
+  --bv-tint-pale: #effaf8; /* page background, pale fills */
+  --bv-ink: #16231f;
+  --bv-muted: #6b7b78;
 }
 
 body {
-  background: var(--bv-lilac-pale);
+  background: var(--bv-tint-pale);
 }
 
 #root {
@@ -31,7 +30,7 @@ body {
 
 .topnav {
   background: #fff;
-  border-bottom: 1px solid var(--bv-lilac-light);
+  border-bottom: 1px solid var(--bv-tint-light);
 }
 
 .topnav-inner {
@@ -51,7 +50,7 @@ body {
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--bv-navy);
+  color: var(--bv-primary);
 }
 
 .topnav-brand svg {
@@ -89,13 +88,13 @@ body {
 }
 
 .topnav-link:hover {
-  background: var(--bv-lilac-pale);
-  color: var(--bv-navy);
+  background: var(--bv-tint-pale);
+  color: var(--bv-primary);
 }
 
 .topnav-link.is-active {
-  background: var(--bv-lilac-pale);
-  color: var(--bv-navy);
+  background: var(--bv-tint-pale);
+  color: var(--bv-primary);
   font-weight: 600;
 }
 
@@ -105,7 +104,7 @@ body {
   gap: 0.55rem;
   margin-left: auto;
   padding-left: 0.85rem;
-  border-left: 1px solid var(--bv-lilac-light);
+  border-left: 1px solid var(--bv-tint-light);
 }
 
 .topnav-avatar {
@@ -116,7 +115,7 @@ body {
   height: 32px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: var(--bv-indigo-bright);
+  background: var(--bv-primary);
   color: #fff;
   font-size: 0.85rem;
   font-weight: 700;
@@ -162,8 +161,8 @@ body {
 }
 
 .topnav-signout:hover {
-  background: var(--bv-lilac-pale);
-  color: var(--bv-navy);
+  background: var(--bv-tint-pale);
+  color: var(--bv-primary);
 }
 
 .app-main {
@@ -201,7 +200,7 @@ body {
   justify-content: center;
   padding: 6vh 1.5rem 2rem;
   overflow-y: auto;
-  background: rgba(7, 11, 99, 0.32);
+  background: rgba(30, 107, 99, 0.32);
   backdrop-filter: blur(2px);
 }
 
@@ -211,7 +210,7 @@ body {
   padding: 1.6rem 1.75rem;
   border-radius: 14px;
   background: #fff;
-  box-shadow: 0 12px 32px rgba(7, 11, 99, 0.12);
+  box-shadow: 0 12px 32px rgba(30, 107, 99, 0.12);
 }
 
 /* Replace Amplify's default teal brand colour with the Bastion Vault ramp across
@@ -220,72 +219,128 @@ body {
    also uses --amplify-colors-teal-* directly in places, so both are remapped. */
 :root,
 [data-amplify-theme] {
-  --amplify-colors-teal-10: var(--bv-lilac-pale);
-  --amplify-colors-teal-20: var(--bv-lilac-light);
-  --amplify-colors-teal-40: var(--bv-lilac);
-  --amplify-colors-teal-60: var(--bv-periwinkle);
-  --amplify-colors-teal-80: var(--bv-indigo-bright);
-  --amplify-colors-teal-90: var(--bv-indigo);
-  --amplify-colors-teal-100: var(--bv-navy);
+  --amplify-colors-teal-10: var(--bv-tint-pale);
+  --amplify-colors-teal-20: var(--bv-tint-light);
+  --amplify-colors-teal-40: var(--bv-tint);
+  --amplify-colors-teal-60: var(--bv-primary);
+  --amplify-colors-teal-80: var(--bv-primary);
+  --amplify-colors-teal-90: var(--bv-primary-deep);
+  --amplify-colors-teal-100: var(--bv-primary);
 }
 
 :root,
 [data-amplify-theme] {
-  --amplify-colors-primary-10: var(--bv-lilac-pale);
-  --amplify-colors-primary-20: var(--bv-lilac-light);
-  --amplify-colors-primary-40: var(--bv-lilac);
-  --amplify-colors-primary-60: var(--bv-periwinkle);
-  --amplify-colors-primary-80: var(--bv-indigo-bright);
-  --amplify-colors-primary-90: var(--bv-indigo);
-  --amplify-colors-primary-100: var(--bv-navy);
-  --amplify-components-link-color: var(--bv-indigo-bright);
-  --amplify-components-link-hover-color: var(--bv-navy);
+  --amplify-colors-primary-10: var(--bv-tint-pale);
+  --amplify-colors-primary-20: var(--bv-tint-light);
+  --amplify-colors-primary-40: var(--bv-tint);
+  --amplify-colors-primary-60: var(--bv-primary);
+  --amplify-colors-primary-80: var(--bv-primary);
+  --amplify-colors-primary-90: var(--bv-primary-deep);
+  --amplify-colors-primary-100: var(--bv-primary);
+  --amplify-components-link-color: var(--bv-primary);
+  --amplify-components-link-hover-color: var(--bv-primary);
 }
 
 /* Amplify Authenticator (login screen) */
 [data-amplify-authenticator] {
-  --amplify-components-button-primary-background-color: var(--bv-navy);
-  --amplify-components-button-primary-hover-background-color: var(--bv-navy-alt);
-  --amplify-components-button-primary-active-background-color: var(--bv-navy-alt);
-  --amplify-components-tabs-item-active-color: var(--bv-indigo-bright);
-  --amplify-components-tabs-item-active-border-color: var(--bv-indigo-bright);
-  --amplify-components-fieldcontrol-focus-border-color: var(--bv-indigo-bright);
-  --amplify-components-button-link-color: var(--bv-indigo-bright);
+  --amplify-components-button-primary-background-color: var(--bv-primary);
+  --amplify-components-button-primary-hover-background-color: var(--bv-primary-dark);
+  --amplify-components-button-primary-active-background-color: var(--bv-primary-dark);
+  --amplify-components-tabs-item-active-color: var(--bv-primary);
+  --amplify-components-tabs-item-active-border-color: var(--bv-primary);
+  --amplify-components-fieldcontrol-focus-border-color: var(--bv-primary);
+  --amplify-components-button-link-color: var(--bv-primary);
   --amplify-components-authenticator-router-border-width: 0;
-  --amplify-components-authenticator-router-box-shadow: 0 4px 16px rgba(7, 11, 99, 0.07);
+  --amplify-components-authenticator-router-box-shadow: 0 4px 16px rgba(30, 107, 99, 0.07);
 
+  --amplify-components-authenticator-router-box-shadow: none;
+  --amplify-components-authenticator-router-background-color: transparent;
+
+  /* Split screen: form on the left, teal decorative panel on the right.
+     The container only exists in the DOM while signed out, so ::after (the
+     panel) and ::before (the copyright) disappear automatically after login. */
   display: grid;
-  place-items: center;
+  grid-template-columns: 1fr 1fr;
   min-height: 100vh;
-  padding: 2rem;
-  background:
-    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(86, 102, 255, 0.14), transparent),
-    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(7, 11, 99, 0.08), transparent),
-    var(--bv-lilac-pale);
+  padding: 0;
+  background: #fff;
+  position: relative;
 }
 
+/* Left column — form card, vertically centred, left-aligned */
 [data-amplify-authenticator] [data-amplify-router] {
-  border-radius: 16px;
-  overflow: hidden;
+  grid-column: 1;
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 0 2.5rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Right column — teal gradient, line pattern, floating chart card */
+[data-amplify-authenticator]::after {
+  content: '';
+  grid-column: 2;
+  align-self: stretch;
+  background-image:
+    url('./signin-chart.png'),
+    url('./signin-pattern.png'),
+    url('./signin-pattern.png'),
+    linear-gradient(135deg, #3ab5a7 0%, var(--bv-primary) 48%, var(--bv-primary-dark) 100%);
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  background-position:
+    center,
+    top -12px right -8px,
+    bottom -12px left -8px,
+    center;
+  background-size:
+    82%,
+    240px,
+    240px,
+    cover;
+}
+
+/* Copyright pinned bottom-left of the left column */
+[data-amplify-authenticator]::before {
+  content: '© Bastion Vault 2026';
+  position: absolute;
+  left: 2.5rem;
+  bottom: 2rem;
+  font-size: 0.78rem;
+  color: var(--bv-muted);
 }
 
 [data-amplify-authenticator] .amplify-field-group__control:focus-within {
-  border-color: var(--bv-indigo-bright);
-  box-shadow: 0 0 0 3px rgba(86, 102, 255, 0.16);
+  border-color: var(--bv-primary);
+  box-shadow: 0 0 0 3px rgba(52, 169, 157, 0.16);
 }
 
-/* Product identity above the sign-in card */
+/* Collapse to a single column on narrow viewports; hide the panel */
+@media (max-width: 860px) {
+  [data-amplify-authenticator] {
+    grid-template-columns: 1fr;
+  }
+  [data-amplify-authenticator]::after {
+    display: none;
+  }
+}
+
+/* Product identity above the sign-in form */
 .auth-header {
-  text-align: center;
+  text-align: left;
   padding-bottom: 1.5rem;
 }
 
 .auth-brand {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.55rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .auth-brand svg {
@@ -298,7 +353,7 @@ body {
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--bv-navy);
+  color: var(--bv-primary);
 }
 
 .auth-header h1 {
@@ -324,23 +379,23 @@ body {
 
 /* Amplify UI Button overrides */
 .amplify-button--primary {
-  background-color: var(--bv-navy) !important;
+  background-color: var(--bv-primary) !important;
 }
 
 .amplify-button--primary:hover {
-  background-color: var(--bv-navy-alt) !important;
+  background-color: var(--bv-primary-dark) !important;
 }
 
 .amplify-button[data-variation='link'] {
-  color: var(--bv-indigo-bright) !important;
+  color: var(--bv-primary) !important;
 }
 
 /* File browser card */
 .browser-card {
   background: #fff;
-  border: 1px solid var(--bv-lilac-light);
+  border: 1px solid var(--bv-tint-light);
   border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(7, 11, 99, 0.04);
+  box-shadow: 0 1px 2px rgba(30, 107, 99, 0.04);
   padding: 1.5rem 1.75rem;
   text-align: left;
   max-width: 1440px;
@@ -349,7 +404,7 @@ body {
 
 /* Storage browser table polish */
 .browser-card .amplify-storage-browser__table tbody tr:hover td {
-  background: var(--bv-lilac-pale);
+  background: var(--bv-tint-pale);
 }
 
 .browser-card h2,
@@ -368,10 +423,10 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  border: 1px solid var(--bv-lilac);
+  border: 1px solid var(--bv-tint);
   border-radius: 8px;
   background: #fff;
-  color: var(--bv-navy);
+  color: var(--bv-primary);
   padding: 0.45rem 0.95rem;
   font-size: 0.87rem;
   font-weight: 600;
@@ -382,24 +437,24 @@ body {
 }
 
 .action-button:hover {
-  background: var(--bv-lilac-pale);
-  border-color: var(--bv-periwinkle);
+  background: var(--bv-tint-pale);
+  border-color: var(--bv-primary);
 }
 
 .action-button--primary {
-  background: var(--bv-navy);
-  border-color: var(--bv-navy);
+  background: var(--bv-primary);
+  border-color: var(--bv-primary);
   color: #fff;
 }
 
 .action-button--primary:hover {
-  background: var(--bv-navy-alt);
-  border-color: var(--bv-navy-alt);
+  background: var(--bv-primary-dark);
+  border-color: var(--bv-primary-dark);
 }
 
 .action-button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(86, 102, 255, 0.25);
+  box-shadow: 0 0 0 3px rgba(52, 169, 157, 0.25);
 }
 
 /* Date filter + selection counter toolbar */
@@ -438,8 +493,8 @@ body {
 
 .date-filter input[type='date']:focus {
   outline: none;
-  border-color: var(--bv-indigo-bright);
-  box-shadow: 0 0 0 2px var(--bv-lilac-light);
+  border-color: var(--bv-primary);
+  box-shadow: 0 0 0 2px var(--bv-tint-light);
 }
 
 .clear-filter {
@@ -459,7 +514,7 @@ body {
 
 .selected-badge {
   margin-left: auto;
-  background-color: var(--bv-indigo-bright);
+  background-color: var(--bv-primary);
   color: white;
   border-radius: 20px;
   padding: 0.25rem 0.8rem;
@@ -507,9 +562,9 @@ body {
   width: 100%;
   max-width: 560px;
   background: #fff;
-  border: 1px solid var(--bv-lilac-light);
+  border: 1px solid var(--bv-tint-light);
   border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(7, 11, 99, 0.04);
+  box-shadow: 0 1px 2px rgba(30, 107, 99, 0.04);
   overflow: hidden;
   text-align: left;
 }
@@ -519,7 +574,7 @@ body {
   align-items: center;
   gap: 1.25rem;
   padding: 2rem 2rem 1.75rem;
-  background: linear-gradient(135deg, var(--bv-lilac-light) 0%, #fff 70%);
+  background: linear-gradient(135deg, var(--bv-tint-light) 0%, #fff 70%);
   border-bottom: 1px solid #f0f0f0;
 }
 
@@ -528,14 +583,14 @@ body {
   height: 64px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--bv-indigo-bright) 0%, var(--bv-navy) 100%);
+  background: linear-gradient(135deg, var(--bv-primary) 0%, var(--bv-primary) 100%);
   color: #fff;
   font-size: 1.6rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 10px rgba(7, 11, 99, 0.28);
+  box-shadow: 0 3px 10px rgba(30, 107, 99, 0.28);
 }
 
 .profile-identity {
@@ -563,8 +618,8 @@ body {
 }
 
 .profile-role-badge.admin {
-  background: var(--bv-lilac-light);
-  color: var(--bv-navy);
+  background: var(--bv-tint-light);
+  color: var(--bv-primary);
 }
 
 .profile-details {
@@ -615,9 +670,9 @@ body {
   padding: 0.15rem 0.6rem;
   border-radius: 999px;
   font-size: 0.78rem;
-  background: var(--bv-lilac-light);
-  color: var(--bv-navy);
-  border: 1px solid rgba(86, 102, 255, 0.28);
+  background: var(--bv-tint-light);
+  color: var(--bv-primary);
+  border: 1px solid rgba(52, 169, 157, 0.28);
 }
 
 .profile-note {
