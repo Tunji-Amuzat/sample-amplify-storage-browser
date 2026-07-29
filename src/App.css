@@ -12,6 +12,7 @@
 }
 
 body {
+  margin: 0;
   background: var(--bv-tint-pale);
 }
 
@@ -269,18 +270,28 @@ body {
   position: relative;
 }
 
-/* Left column — form card, vertically centred, left-aligned */
-[data-amplify-authenticator] [data-amplify-router] {
+/* Left column — the container holds Header, form card and Footer as siblings,
+   so the shared inset lives here. Padding on the router alone would push the
+   form right of the header. */
+[data-amplify-authenticator] [data-amplify-container] {
   grid-column: 1;
   align-self: center;
   justify-self: center;
   width: 100%;
   max-width: 460px;
   padding: 0 2.75rem;
+}
+
+[data-amplify-authenticator] [data-amplify-router] {
+  padding: 0;
   border: none;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+}
+
+[data-amplify-authenticator] [data-amplify-form] {
+  padding: 0;
 }
 
 /* Logo pinned to the top-left corner, out of the form's flow */
