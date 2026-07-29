@@ -11,6 +11,7 @@ import { Amplify } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { ProfilePanel } from './ProfilePanel';
 import { useCurrentUser } from './useCurrentUser';
+import { UploadModal } from './UploadModal';
 
 Amplify.configure(config);
 
@@ -191,12 +192,23 @@ function LocationDetailViewWithExtras() {
         <StorageBrowser.LocationDetailView.FilePreview />
       </div>
     </StorageBrowser.LocationDetailView.Provider>
-    {actionType && (
-      <div className="modal-scrim" role="presentation">
-        <div className="modal-panel" role="dialog" aria-modal="true">
-          <StorageBrowser.LocationActionView />
+    {actionType === 'upload' ? (
+      <UploadModal
+        bucketName={BUCKET_NAME}
+        region={config.storage.aws_region}
+        destinationKey={state.location.key}
+        destinationLabel={state.location.key || BUCKET_NAME}
+        onClose={() => state.onActionExit()}
+        onUploaded={() => state.onRefresh()}
+      />
+    ) : (
+      actionType && (
+        <div className="modal-scrim" role="presentation">
+          <div className="modal-panel" role="dialog" aria-modal="true">
+            <StorageBrowser.LocationActionView />
+          </div>
         </div>
-      </div>
+      )
     )}
     </>
   );

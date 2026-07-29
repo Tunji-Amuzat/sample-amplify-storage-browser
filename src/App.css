@@ -263,6 +263,252 @@ body {
   box-shadow: 0 12px 32px rgba(30, 107, 99, 0.12);
 }
 
+/* Custom upload modal */
+.upload-modal {
+  width: 100%;
+  max-width: 520px;
+  padding: 1.5rem;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(30, 107, 99, 0.12);
+}
+
+.upload-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.upload-modal-head h2 {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--bv-ink);
+}
+
+.upload-modal-head p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--bv-muted);
+  overflow-wrap: anywhere;
+}
+
+.modal-close {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 7px;
+  background: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--bv-muted);
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: var(--bv-tint-pale);
+  color: var(--bv-ink);
+}
+
+/* Drag-and-drop zone */
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1.5rem 1rem;
+  border: 1.5px dashed var(--bv-tint);
+  border-radius: 12px;
+  background: var(--bv-tint-pale);
+  cursor: pointer;
+  text-align: center;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.dropzone.is-over {
+  border-color: var(--bv-primary);
+  background: rgba(52, 169, 157, 0.06);
+}
+
+.dropzone-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--bv-tint-light);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--bv-muted);
+}
+
+.dropzone-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dropzone-title {
+  margin: 0.35rem 0 0;
+  font-size: 0.87rem;
+  color: var(--bv-ink);
+}
+
+.dropzone-link {
+  color: var(--bv-primary);
+  font-weight: 600;
+}
+
+.dropzone-hint {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--bv-muted);
+}
+
+/* Queued / uploading file cards */
+.upload-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.upload-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--bv-tint-light);
+  border-radius: 10px;
+}
+
+.file-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.upload-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.upload-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.upload-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--bv-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upload-remove {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  color: var(--bv-muted);
+  cursor: pointer;
+  padding: 0.15rem;
+}
+
+.upload-remove svg {
+  width: 16px;
+  height: 16px;
+}
+
+.upload-remove:hover {
+  color: #e5484d;
+}
+
+.upload-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.1rem 0 0.4rem;
+  font-size: 0.75rem;
+  color: var(--bv-muted);
+}
+
+.upload-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.upload-status.done {
+  color: var(--bv-primary);
+  font-weight: 600;
+}
+
+.upload-status.done svg {
+  width: 13px;
+  height: 13px;
+}
+
+.upload-status.error {
+  color: #e5484d;
+}
+
+.progress {
+  height: 6px;
+  border-radius: 4px;
+  background: var(--bv-tint-light);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--bv-primary);
+  transition: width 0.2s ease;
+}
+
+.progress-fill.error {
+  background: #e5484d;
+}
+
+.upload-pct {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--bv-ink);
+}
+
+.upload-modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.upload-modal-foot .btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Replace Amplify's default teal brand colour with the Bastion Vault ramp across
    all UI components (links, sort indicators, pagination, focus states).
    The Storage Browser stylesheet re-points the whole primary ramp at teal, and
