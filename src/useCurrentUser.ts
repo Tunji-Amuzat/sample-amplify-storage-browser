@@ -3,8 +3,16 @@ import { fetchAuthSession, getCurrentUser } from 'aws-amplify/auth';
 
 export interface CurrentUser {
   email: string;
+  name: string;
   initial: string;
   isAdmin: boolean;
+}
+
+/** Best-effort first name from an email local part, e.g. joshua.adebayo@x → Joshua */
+function nameFromEmail(email: string): string {
+  const local = email.split('@')[0] ?? '';
+  const first = local.split(/[.\-_+]/)[0] ?? local;
+  return first ? first.charAt(0).toUpperCase() + first.slice(1) : 'there';
 }
 
 /**
@@ -34,6 +42,7 @@ export function useCurrentUser(): CurrentUser | null {
 
         setUser({
           email,
+          name: nameFromEmail(email),
           initial: email.charAt(0).toUpperCase(),
           isAdmin: groups.includes('admin'),
         });

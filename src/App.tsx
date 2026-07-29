@@ -74,6 +74,7 @@ const { StorageBrowser, useView } = createStorageBrowser({
 
 function LocationDetailViewWithExtras() {
   const state = useView('LocationDetail');
+  const user = useCurrentUser();
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
@@ -111,50 +112,63 @@ function LocationDetailViewWithExtras() {
   return (
     <>
     <StorageBrowser.LocationDetailView.Provider {...state} pageItems={filteredItems}>
-      <StorageBrowser.LocationDetailView.Navigation />
-      <div className="detail-actions">
-        <button
-          className="action-button action-button--primary"
-          onClick={() => state.onActionSelect('createFolder')}
-        >
-          New folder
-        </button>
-        <button className="action-button" onClick={() => state.onActionSelect('upload')}>
-          Upload
-        </button>
-      </div>
-      <div className="detail-toolbar">
-        <div className="date-filter">
-          <label>Date range</label>
-          <input
-            type="date"
-            value={fromDate}
-            max={toDate || undefined}
-            onChange={(e) => setFromDate(e.target.value)}
-            aria-label="From date"
-          />
-          <span className="date-separator">to</span>
-          <input
-            type="date"
-            value={toDate}
-            min={fromDate || undefined}
-            onChange={(e) => setToDate(e.target.value)}
-            aria-label="To date"
-          />
-          {isFiltering && (
-            <button className="clear-filter" onClick={() => { setFromDate(''); setToDate(''); }}>
-              Clear
-            </button>
-          )}
+      {/* Greeting + primary actions on one row (Figma page header) */}
+      <div className="files-header">
+        <div className="files-title">
+          <h1>Welcome back{user ? `, ${user.name}` : ''}</h1>
+          <p>Browse and manage your documents</p>
         </div>
-        {selectedCount > 0 && (
+        <div className="files-actions">
+          <button className="btn-outline" onClick={() => state.onActionSelect('createFolder')}>
+            <FolderPlusIcon />
+            New Folder
+          </button>
+          <button className="btn-primary" onClick={() => state.onActionSelect('upload')}>
+            <PlusIcon />
+            Upload
+          </button>
+        </div>
+      </div>
+
+      {/* Breadcrumb on the left, search + date filter on the right */}
+      <div className="files-toolbar">
+        <StorageBrowser.LocationDetailView.Navigation />
+        <div className="files-toolbar-right">
+          <StorageBrowser.LocationDetailView.Search />
+          <div className="date-filter">
+            <label>Date range</label>
+            <input
+              type="date"
+              value={fromDate}
+              max={toDate || undefined}
+              onChange={(e) => setFromDate(e.target.value)}
+              aria-label="From date"
+            />
+            <span className="date-separator">to</span>
+            <input
+              type="date"
+              value={toDate}
+              min={fromDate || undefined}
+              onChange={(e) => setToDate(e.target.value)}
+              aria-label="To date"
+            />
+            {isFiltering && (
+              <button className="clear-filter" onClick={() => { setFromDate(''); setToDate(''); }}>
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {selectedCount > 0 && (
+        <div className="detail-toolbar">
           <span className="selected-badge">
             {selectedCount} file{selectedCount !== 1 ? 's' : ''} selected
           </span>
-        )}
-      </div>
+        </div>
+      )}
       <StorageBrowser.LocationDetailView.ActionsList />
-      <StorageBrowser.LocationDetailView.Search />
       <StorageBrowser.LocationDetailView.SearchSubfoldersToggle />
       <StorageBrowser.LocationDetailView.Message />
       <StorageBrowser.LocationDetailView.LoadingIndicator />
@@ -227,6 +241,31 @@ function SignOutIcon() {
   );
 }
 
+function FolderPlusIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v7.5A1.5 1.5 0 0 1 17.5 19h-13A1.5 1.5 0 0 1 3 17.5v-10Z" />
+      <path d="M11 12.5h4M13 10.5v4" />
+    </svg>
+  );
+}
+
+function PlusIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
+function ChevronDownIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
 function TopNav({
   view,
   onNavigate,
@@ -237,6 +276,7 @@ function TopNav({
   onSignOut: () => void;
 }) {
   const user = useCurrentUser();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="topnav">
@@ -252,28 +292,54 @@ function TopNav({
             onClick={() => onNavigate('browser')}
           >
             <FilesIcon />
-            Files
-          </button>
-          <button
-            className={`topnav-link${view === 'profile' ? ' is-active' : ''}`}
-            onClick={() => onNavigate('profile')}
-          >
-            <ProfileIcon />
-            Profile
+            Folders
           </button>
         </nav>
 
-        <div className="topnav-user">
-          <div className="topnav-avatar">{user?.initial ?? '·'}</div>
-          <div className="topnav-user-text">
-            <span className="topnav-user-email">{user?.email ?? 'Signed in'}</span>
-            <span className="topnav-user-role">
-              {user?.isAdmin ? 'Administrator' : 'Standard user'}
+        <div className="topnav-user-menu">
+          <button
+            className="topnav-user-pill"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+          >
+            <span className="topnav-avatar">{user?.initial ?? '·'}</span>
+            <span className="topnav-user-text">
+              <span className="topnav-user-name">{user?.name ?? 'Account'}</span>
+              <span className="topnav-user-role">
+                {user?.isAdmin ? 'Administrator' : 'Standard user'}
+              </span>
             </span>
-          </div>
-          <button className="topnav-signout" onClick={onSignOut} aria-label="Sign out">
-            <SignOutIcon />
+            <ChevronDownIcon />
           </button>
+
+          {menuOpen && (
+            <>
+              <div className="menu-backdrop" onClick={() => setMenuOpen(false)} />
+              <div className="user-dropdown" role="menu">
+                <button
+                  role="menuitem"
+                  onClick={() => {
+                    onNavigate('profile');
+                    setMenuOpen(false);
+                  }}
+                >
+                  <ProfileIcon />
+                  Profile
+                </button>
+                <button
+                  role="menuitem"
+                  onClick={() => {
+                    onSignOut();
+                    setMenuOpen(false);
+                  }}
+                >
+                  <SignOutIcon />
+                  Sign out
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </header>
@@ -324,15 +390,15 @@ function App() {
           <TopNav view={view} onNavigate={setView} onSignOut={() => signOut?.()} />
 
           <main className="app-main">
-            <div className="page-heading">
-              <h1>{view === 'profile' ? 'Profile' : 'Files'}</h1>
-              <p>
-                {view === 'profile'
-                  ? 'Your account and access details'
-                  : 'Browse and manage your documents'}
-              </p>
-            </div>
-            {view === 'profile' && <ProfilePanel />}
+            {view === 'profile' && (
+              <>
+                <div className="page-heading">
+                  <h1>Profile</h1>
+                  <p>Your account and access details</p>
+                </div>
+                <ProfilePanel />
+              </>
+            )}
             {/* Kept mounted across view changes. Unmounting the provider resets the
                 browser's location, which left the file list blank on the way back. */}
             <div className="browser-card" hidden={view !== 'browser'}>

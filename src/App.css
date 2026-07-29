@@ -99,26 +99,45 @@ body {
   font-weight: 600;
 }
 
-.topnav-user {
+/* User pill + dropdown (right of the nav) */
+.topnav-user-menu {
+  position: relative;
+  margin-left: auto;
+}
+
+.topnav-user-pill {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  margin-left: auto;
-  padding-left: 0.85rem;
-  border-left: 1px solid var(--bv-tint-light);
+  padding: 0.3rem 0.7rem 0.3rem 0.4rem;
+  border: 1px solid var(--bv-tint-light);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.topnav-user-pill:hover {
+  border-color: var(--bv-tint);
+}
+
+.topnav-user-pill > svg {
+  width: 16px;
+  height: 16px;
+  color: var(--bv-muted);
 }
 
 .topnav-avatar {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--bv-primary);
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 700;
 }
 
@@ -126,12 +145,13 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  max-width: 190px;
-  line-height: 1.25;
+  max-width: 170px;
+  line-height: 1.2;
+  text-align: left;
 }
 
-.topnav-user-email {
-  font-size: 0.78rem;
+.topnav-user-name {
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--bv-ink);
   overflow: hidden;
@@ -140,29 +160,56 @@ body {
 }
 
 .topnav-user-role {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--bv-muted);
 }
 
-.topnav-signout {
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  z-index: 31;
+  min-width: 172px;
+  padding: 0.35rem;
+  background: #fff;
+  border: 1px solid var(--bv-tint-light);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(30, 107, 99, 0.12);
+}
+
+.user-dropdown button {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.35rem;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.55rem 0.6rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   background: none;
-  color: var(--bv-muted);
+  color: var(--bv-ink);
+  font-size: 0.86rem;
+  text-align: left;
   cursor: pointer;
 }
 
-.topnav-signout svg {
-  width: 18px;
-  height: 18px;
+.user-dropdown button svg {
+  width: 17px;
+  height: 17px;
+  color: var(--bv-muted);
 }
 
-.topnav-signout:hover {
+.user-dropdown button:hover {
   background: var(--bv-tint-pale);
+  color: var(--bv-primary);
+}
+
+.user-dropdown button:hover svg {
   color: var(--bv-primary);
 }
 
@@ -411,21 +458,12 @@ body {
   color: var(--bv-primary) !important;
 }
 
-/* File browser card */
+/* Browser view is a plain container — the greeting and toolbar sit on the page
+   background; the table lives in its own white card (see .detail-body). */
 .browser-card {
-  background: #fff;
-  border: 1px solid var(--bv-tint-light);
-  border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(30, 107, 99, 0.04);
-  padding: 1.5rem 1.75rem;
-  text-align: left;
   max-width: 1440px;
   margin: 0 auto;
-}
-
-/* Storage browser table polish */
-.browser-card .amplify-storage-browser__table tbody tr:hover td {
-  background: var(--bv-tint-pale);
+  text-align: left;
 }
 
 .browser-card h2,
@@ -433,23 +471,44 @@ body {
   text-align: left;
 }
 
-/* Primary actions — surfaced from the overflow menu */
-.detail-actions {
+/* Page header: greeting + primary actions on one row */
+.files-header {
   display: flex;
-  gap: 0.6rem;
-  padding: 0.85rem 0 0.35rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.action-button {
+.files-title h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--bv-ink);
+}
+
+.files-title p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--bv-muted);
+}
+
+.files-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+/* Buttons */
+.btn-outline,
+.btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  border: 1px solid var(--bv-tint);
-  border-radius: 8px;
-  background: #fff;
-  color: var(--bv-primary);
-  padding: 0.45rem 0.95rem;
-  font-size: 0.87rem;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  border-radius: 9px;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
   transition:
@@ -457,25 +516,66 @@ body {
     border-color 0.15s ease;
 }
 
-.action-button:hover {
-  background: var(--bv-tint-pale);
-  border-color: var(--bv-primary);
+.btn-outline svg,
+.btn-primary svg {
+  width: 17px;
+  height: 17px;
 }
 
-.action-button--primary {
+.btn-outline {
+  border: 1px solid var(--bv-tint-light);
+  background: #fff;
+  color: var(--bv-ink);
+}
+
+.btn-outline:hover {
+  border-color: var(--bv-tint);
+  background: var(--bv-tint-pale);
+}
+
+.btn-primary {
+  border: 1px solid var(--bv-primary);
   background: var(--bv-primary);
-  border-color: var(--bv-primary);
   color: #fff;
 }
 
-.action-button--primary:hover {
+.btn-primary:hover {
   background: var(--bv-primary-dark);
   border-color: var(--bv-primary-dark);
 }
 
-.action-button:focus-visible {
+.btn-outline:focus-visible,
+.btn-primary:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(52, 169, 157, 0.25);
+}
+
+/* Toolbar: breadcrumb left, search + date filter right */
+.files-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.files-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Table header row tint */
+.detail-body thead th {
+  background: var(--bv-tint-pale);
+  color: var(--bv-ink);
+  font-weight: 600;
+}
+
+.detail-body tbody tr:hover td {
+  background: var(--bv-tint-pale);
 }
 
 /* Date filter + selection counter toolbar */
@@ -545,15 +645,22 @@ body {
 }
 
 /* File preview side-by-side layout */
+/* White card wrapping the table (and preview when open) */
 .detail-body {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
+  background: #fff;
+  border: 1px solid var(--bv-tint-light);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(30, 107, 99, 0.04);
+  overflow: hidden;
 }
 
 .detail-table-area {
   flex: 1;
   min-width: 0;
+  padding: 0.35rem 0.35rem 0.5rem;
 }
 
 .pdf-preview-frame {
