@@ -263,6 +263,116 @@ body {
   box-shadow: 0 12px 32px rgba(30, 107, 99, 0.12);
 }
 
+/* File preview lightbox */
+.preview-modal {
+  width: 100%;
+  max-width: 920px;
+  max-height: 88vh;
+  overflow: auto;
+  padding: 1.25rem 1.5rem;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(30, 107, 99, 0.12);
+}
+
+.preview-modal .pdf-preview-frame {
+  height: 74vh;
+}
+
+/* Delete / confirm modal */
+.confirm-modal {
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(30, 107, 99, 0.12);
+  text-align: left;
+}
+
+.confirm-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.confirm-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.confirm-icon.danger {
+  background: #fdeceb;
+  color: #e5484d;
+}
+
+.confirm-modal h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--bv-ink);
+}
+
+.confirm-modal p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--bv-muted);
+}
+
+.confirm-modal strong {
+  color: var(--bv-ink);
+  font-weight: 600;
+}
+
+.confirm-error {
+  margin-top: 0.75rem !important;
+  color: #e5484d !important;
+}
+
+.confirm-foot {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.confirm-foot .btn-outline,
+.confirm-foot .btn-danger {
+  flex: 1;
+  justify-content: center;
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid #e5484d;
+  border-radius: 9px;
+  background: #e5484d;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #d13c38;
+  border-color: #d13c38;
+}
+
+.btn-danger:disabled,
+.btn-outline:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 /* Custom upload modal */
 .upload-modal {
   width: 100%;

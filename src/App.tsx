@@ -12,6 +12,7 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import { ProfilePanel } from './ProfilePanel';
 import { useCurrentUser } from './useCurrentUser';
 import { UploadModal } from './UploadModal';
+import { DeleteModal, type DeleteTarget } from './DeleteModal';
 
 Amplify.configure(config);
 
@@ -110,6 +111,14 @@ function LocationDetailViewWithExtras() {
 
   const selectedCount = state.dataItems?.length ?? 0;
 
+  const deleteTargets: DeleteTarget[] = (state.dataItems ?? [])
+    .filter((item) => item.type === 'FILE' || item.type === 'FOLDER')
+    .map((item) => ({
+      key: item.key,
+      type: item.type as 'FILE' | 'FOLDER',
+      name: item.key.split('/').filter(Boolean).pop() ?? item.key,
+    }));
+
   return (
     <>
     <StorageBrowser.LocationDetailView.Provider {...state} pageItems={filteredItems}>
@@ -189,8 +198,26 @@ function LocationDetailViewWithExtras() {
           <StorageBrowser.LocationDetailView.LocationItemsTable />
           <StorageBrowser.LocationDetailView.Pagination />
         </div>
-        <StorageBrowser.LocationDetailView.FilePreview />
       </div>
+
+      {/* File preview as a centred lightbox instead of a squeezed side panel */}
+      {state.activeFile && (
+        <div
+          className="modal-scrim"
+          role="presentation"
+          onClick={() => state.onSelectActiveFile(undefined)}
+        >
+          <div
+            className="preview-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="File preview"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <StorageBrowser.LocationDetailView.FilePreview />
+          </div>
+        </div>
+      )}
     </StorageBrowser.LocationDetailView.Provider>
     {actionType === 'upload' ? (
       <UploadModal
@@ -200,6 +227,17 @@ function LocationDetailViewWithExtras() {
         destinationLabel={state.location.key || BUCKET_NAME}
         onClose={() => state.onActionExit()}
         onUploaded={() => state.onRefresh()}
+      />
+    ) : actionType === 'delete' && deleteTargets.length > 0 ? (
+      <DeleteModal
+        bucketName={BUCKET_NAME}
+        region={config.storage.aws_region}
+        items={deleteTargets}
+        onClose={() => state.onActionExit()}
+        onDeleted={() => {
+          state.onRefresh();
+          state.onActionExit();
+        }}
       />
     ) : (
       actionType && (
